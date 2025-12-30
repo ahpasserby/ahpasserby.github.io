@@ -1,0 +1,1114 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>带你入门数据处理3 | Sarzn</title><meta name="keywords" content="数据处理教学"><meta name="author" content="Sarzn"><meta name="copyright" content="Sarzn"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="带你入门数据处理3"><meta name="application-name" content="带你入门数据处理3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="带你入门数据处理3"><meta property="og:url" content="http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/index.html"><meta property="og:site_name" content="Sarzn"><meta property="og:description" content="Chapter 3: Dive Into Machine Learning - From Regression to Clustering Welcome to the third chapter of my data analytics blog series! Today, we’ll expl"><meta property="og:locale" content="en"><meta property="og:image" content="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg"><meta property="article:author" content="Sarzn"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg"><meta name="description" content="Chapter 3: Dive Into Machine Learning - From Regression to Clustering Welcome to the third chapter of my data analytics blog series! Today, we’ll expl"><link rel="shortcut icon" href="https://bu.dusays.com/2025/10/18/68f295f709d5f.ico"><link rel="canonical" href="http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与朋友们无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.sarzn.xyz/',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"Author: Sarzn","link":"Link: ","source":"Source: Sarzn","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.","copySuccess":"Copy success, copy and reprint please mark the address of this article"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Sarzn',
+  title: '带你入门数据处理3',
+  postAI: '',
+  pageFillDescription: 'Linear Regression (线性回归), Classification (分类), Clustering Method (聚类方法)机器学习线性回归分类聚类中文机器学习入门机器学习的定义机器学习任务经验性能有监督学习无监督学习维度有监督学习无监督学习核心特征是否有老师核心目标示例回归分类类型回归分类目标变量连续数值离散类别核心目标示例模型评估的抽样方法留出法训练集测试集交叉验证折交叉验证线性回归预测目标值截距系数输入特征简单多元线性回归类型简单线性回归多元线性回归特征数模型公式示例绘制简单线性回归模型截距系数回归模型评估平均绝对误差均方误差决定系数模型评估与选择训练误差泛化误差测试误差留出法数据划分模型过拟合分类分类准确率指标混淆矩阵二分类真阳真阴假阳假阴总体准确率精确率召回率灵敏度决策树表示内部节点分支边叶节点节点分裂标准内部尽可能相似外部尽可能不同二分裂示例聚类方法聚类聚类的含义高相似度低相似度聚类的个应用示例客户细分异常检测文本文档聚类相似度度量曼哈顿距离与欧氏距离距离曼哈顿距离欧氏距离距离如何用于聚类数值化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-12-31 01:37:37',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://bu.dusays.com/2025/10/15/68eebb8d1ea47.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://sarzn.xyz/" title="博客"><img class="back-menu-item-icon" src="https://bu.dusays.com/2025/10/18/68f295f709d5f.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://ahpasserby.github.io/class/" title="八方来财"><img class="back-menu-item-icon" src="https://bu.dusays.com/2025/10/18/68f29aac52cfd.png" alt="八方来财"/><span class="back-menu-item-text">八方来财</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/ahpasserby" title="Github仓库"><img class="back-menu-item-icon" src="https://bu.dusays.com/2025/10/18/68f28ccb378b4.ico" alt="Github仓库"/><span class="back-menu-item-text">Github仓库</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Sarzn</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 奇怪的东西</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://ahpasserby.github.io/heart/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 爱心</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> Search</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://bu.dusays.com/2025/10/15/68ee939b5087b.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://bu.dusays.com/2025/10/15/68ee939b5087b.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2025/10/15/68eeb55ed61f7.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://bu.dusays.com/2025/10/15/68eeb55ed61f7.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> Newest Comments</span></div><div class="aside-list"><span>loading...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/schoolProject/" style="font-size: 1.05rem;">schoolProject<sup>1</sup></a><a href="/tags/skillShare/" style="font-size: 1.05rem;">skillShare<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" style="font-size: 1.05rem;">数据处理教学<sup>3</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/12/"><span class="card-archive-list-date">December 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/11/"><span class="card-archive-list-date">November 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/10/"><span class="card-archive-list-date">October 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Hands-On-Data-%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" itemprop="url">Hands On Data 期末复习</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>数据处理教学</span></a></span></div></div><h1 class="post-title" itemprop="name headline">带你入门数据处理3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-12-30T17:36:40.000Z" title="Created 2025-12-31 01:36:40">2025-12-31</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-12-30T17:37:37.110Z" title="Updated 2025-12-31 01:37:37">2025-12-31</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="带你入门数据处理3"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">Post View:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为珠海"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>珠海</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/"><header><a class="post-meta-categories" href="/categories/Hands-On-Data-%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" itemprop="url">Hands On Data 期末复习</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" tabindex="-1" itemprop="url">数据处理教学</a><h1 id="CrawlerTitle" itemprop="name headline">带你入门数据处理3</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Sarzn</span><time itemprop="dateCreated datePublished" datetime="2025-12-30T17:36:40.000Z" title="Created 2025-12-31 01:36:40">2025-12-31</time><time itemprop="dateCreated datePublished" datetime="2025-12-30T17:37:37.110Z" title="Updated 2025-12-31 01:37:37">2025-12-31</time></header><h1 id="chapter-3-dive-into-machine-learning---from-regression-to-clustering">Chapter
+3: Dive Into Machine Learning - From Regression to Clustering</h1>
+<p>Welcome to the third chapter of my data analytics blog series! Today,
+we’ll explore the fundamentals of machine learning (机器学习), from core
+definitions to practical algorithms like linear regression (线性回归),
+classification (分类), and clustering (聚类). All key terms are paired
+with 中文 (Chinese) translations for clarity. Let’s jump in!</p>
+<h2 id="introduction-to-machine-learning-机器学习入门">Introduction to
+Machine Learning (机器学习入门)</h2>
+<h3 id="what-is-machine-learning-机器学习的定义">What is Machine
+Learning? (机器学习的定义)</h3>
+<p>Machine learning (机器学习) is defined by three core components: -
+<strong>Task (任务, T)</strong>: The goal the model aims to achieve
+(e.g., classifying emails as spam). - <strong>Experience (经验,
+E)</strong>: Labeled or unlabeled data used to train the model (e.g.,
+historical email data with “spam” labels). - <strong>Performance (性能,
+P)</strong>: A metric to measure how well the model performs the task
+(e.g., percentage of correctly classified emails).</p>
+<p>In short: Machines learn from experience to improve performance on a
+specific task—no explicit programming required!</p>
+<h3 id="supervised-vs.-unsupervised-learning-有监督学习-vs.-无监督学习">Supervised
+vs. Unsupervised Learning (有监督学习 vs. 无监督学习)</h3>
+<table>
+<colgroup>
+<col style="width: 17%">
+<col style="width: 40%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr>
+<th>Aspect (维度)</th>
+<th>Supervised Learning (有监督学习)</th>
+<th>Unsupervised Learning (无监督学习)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core Feature (核心特征)</td>
+<td>Uses <strong>labeled data</strong> (X = input features + y = target
+labels)</td>
+<td>Uses <strong>unlabeled data</strong> (only X = input features)</td>
+</tr>
+<tr>
+<td>“Teacher” Role (是否有“老师”)</td>
+<td>Yes (labels guide learning)</td>
+<td>No (model discovers hidden patterns)</td>
+</tr>
+<tr>
+<td>Key Goal (核心目标)</td>
+<td>Predict known targets</td>
+<td>Uncover unknown structures (e.g., clusters)</td>
+</tr>
+<tr>
+<td>Examples (示例)</td>
+<td>- Classify tumors as malignant/benign<br>- Predict house prices<br>-
+Filter spam emails</td>
+<td>- Group customers by shopping behavior<br>- Identify anomalies in
+sensor data<br>- Segment social media users by interests</td>
+</tr>
+</tbody>
+</table>
+<h3 id="regression-vs.-classification-回归-vs.-分类">Regression
+vs. Classification (回归 vs. 分类)</h3>
+<p>Both are subfields of supervised learning—they differ in the type of
+target variable: | Type (类型) | Regression (回归) | Classification
+(分类) | |————-|——————-|———————–| | Target Variable (目标变量) |
+<strong>Continuous</strong> (continuous numeric values 连续数值) |
+<strong>Discrete</strong> (categorical labels 离散类别) | | Key Goal
+(核心目标) | Predict a quantity (e.g., price, temperature) | Assign a
+category (e.g., “yes/no”, “A/B/C”) | | Examples (示例) | - Predict house
+price based on size<br>- Forecast monthly sales<br>- Estimate student
+exam scores | - Classify loan applicants as “safe/risky”<br>- Detect
+COVID-19 (positive/negative)<br>- Identify handwritten digits (0-9)
+|</p>
+<h3 id="sampling-for-model-evaluation-模型评估的抽样方法">Sampling for
+Model Evaluation (模型评估的抽样方法)</h3>
+<p>To assess a model’s performance, we split data into training and
+testing sets—here are two common methods: 1. <strong>Hold-Out Approach
+(留出法)</strong>: - Split data randomly into a <strong>training set
+(训练集)</strong> (e.g., 70-80%) and a <strong>test set
+(测试集)</strong> (e.g., 20-30%). - Train the model on the training set;
+evaluate accuracy on the test set. - Simple and fast, but performance
+depends on the random split.</p>
+<ol start="2" type="1">
+<li><strong>Cross-Validation (交叉验证)</strong>:
+<ul>
+<li>More robust than hold-out. Split data into k equal “folds” (e.g.,
+k=5).</li>
+<li>Train the model on k-1 folds; test on the remaining 1 fold.</li>
+<li>Repeat k times (each fold acts as test set once); average the
+results.</li>
+<li>Reduces bias from random splitting (e.g., k-fold cross-validation
+k折交叉验证).</li>
+</ul></li>
+</ol>
+<h2 id="linear-regression-线性回归">Linear Regression (线性回归)</h2>
+<p>Linear regression is a supervised learning algorithm for predicting
+continuous targets. Let’s break down its key components.</p>
+<h3 id="key-terms-in-f_x-_0-_1-x">Key Terms in ( f_(x) = _0 + _1 x
+)</h3>
+<ul>
+<li>( f_(x) ): Predicted target value (预测目标值).</li>
+<li>( <em>0 ): Intercept (截距) — the value of ( f</em>(x) ) when ( x=0
+) (where the line crosses the y-axis).</li>
+<li>( _1 ): Coefficient (系数) — the slope of the line (change in ( y )
+per unit change in ( x )).</li>
+<li>( x ): Input feature (输入特征) — the variable used to predict ( y
+).</li>
+</ul>
+<h3 id="simple-vs.-multiple-linear-regression-简单-vs.-多元线性回归">Simple
+vs. Multiple Linear Regression (简单 vs. 多元线性回归)</h3>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 42%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr>
+<th>Type (类型)</th>
+<th>Simple Linear Regression (简单线性回归)</th>
+<th>Multiple Linear Regression (多元线性回归)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Features (特征数)</td>
+<td>1 input feature (( x ))</td>
+<td>≥2 input features (( x_1, x_2, …, x_n ))</td>
+</tr>
+<tr>
+<td>Model Formula (模型公式)</td>
+<td>( f_(x) = _0 + _1 x )</td>
+<td>( f_(x) = _0 + _1 x_1 + _2 x_2 + … + _n x_n )</td>
+</tr>
+<tr>
+<td>Example (示例)</td>
+<td>Predict house price from square footage</td>
+<td>Predict house price from square footage + number of bedrooms +
+age</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-to-plot-a-simple-linear-regression-model-绘制简单线性回归模型">How
+to Plot a Simple Linear Regression Model (绘制简单线性回归模型)</h3>
+<p>The model ( f_(x) = _0 + _1 x ) is a straight line—its shape depends
+on ( _0 ) and ( _1 ): - **Changing ( _0 ) (截距)**: Shifts the line up
+(higher ( _0 )) or down (lower ( _0 )) along the y-axis.<br>
+Example: ( _0=10, _1=2 ) → line starts at (0,10); ( _0=5, _1=2 ) → line
+starts at (0,5). - **Changing ( _1 ) (系数)**: Adjusts the slope.<br>
+Example: ( _0=10, _1=3 ) → steeper line; ( _0=10, _1=1 ) → flatter
+line.</p>
+<p>To plot: 1. Choose a range of ( x ) values (e.g., 0 to 10). 2.
+Calculate ( f_(x) ) for each ( x ) using the formula. 3. Plot the (x, (
+f_(x) )) points and draw a straight line through them.</p>
+<h3 id="regression-model-evaluation-回归模型评估">Regression Model
+Evaluation (回归模型评估)</h3>
+<p>We use three key metrics to measure how well the model predicts
+actual values (( y )): 1. <strong>MAE (Mean Absolute Error,
+平均绝对误差)</strong>: - Formula: ( MAE = <em>{i=1}^n |y_i -
+f</em>(x_i)| ) - Definition: Average of the absolute differences between
+actual (( y_i )) and predicted (( f_(x_i) )) values.<br>
+- Interpretation: Lower MAE = better model (less error).</p>
+<ol start="2" type="1">
+<li><strong>MSE (Mean Squared Error, 均方误差)</strong>:
+<ul>
+<li>Formula: ( MSE = <em>{i=1}^n (y_i - f</em>(x_i))^2 )</li>
+<li>Definition: Average of the squared differences between actual and
+predicted values.<br>
+</li>
+<li>Interpretation: Penalizes large errors (squares them); lower MSE =
+better model.</li>
+</ul></li>
+<li><strong>R-Squared (决定系数)</strong>:
+<ul>
+<li>Formula: ( R^2 = 1 - )</li>
+<li>Terms: ( {y} ) = mean of actual values; numerator = sum of squared
+errors; denominator = total variance of ( y ).</li>
+<li>Interpretation: Proportion of variance in ( y ) explained by the
+model (0 ≤ R² ≤ 1). Closer to 1 = model explains more variance.</li>
+</ul></li>
+</ol>
+<h3 id="model-evaluation-selection-模型评估与选择">Model Evaluation
+&amp; Selection (模型评估与选择)</h3>
+<ul>
+<li><strong>Training Error (训练误差)</strong>: Error on the training
+set (e.g., MAE/MSE calculated using training data).<br>
+Measures how well the model fits the training data.</li>
+<li><strong>Generalization (Test) Error (泛化误差/测试误差)</strong>:
+Error on the test set.<br>
+Measures how well the model performs on new, unseen data (the true
+goal!).</li>
+<li><strong>Hold-Out Approach for Data Partitioning
+(留出法数据划分)</strong>:
+<ul>
+<li>Randomly split data into training (70-80%) and test (20-30%)
+sets.</li>
+<li>Train on training data; use test error to estimate generalization
+error.</li>
+<li>Avoid overfitting (模型过拟合) — a model with low training error but
+high test error is “memorizing” training data, not learning.</li>
+</ul></li>
+</ul>
+<h2 id="classification-分类">Classification (分类)</h2>
+<p>Classification predicts discrete categorical labels (e.g., “spam”
+vs. “not spam”). Let’s explore its key metrics and decision tree
+models.</p>
+<h3 id="classification-accuracy-measures-分类准确率指标">Classification
+Accuracy Measures (分类准确率指标)</h3>
+<p>First, define the <strong>confusion matrix (混淆矩阵)</strong> terms
+for binary classification (二分类): - <strong>TP (True Positive,
+真阳)</strong>: Actual positive → predicted positive (e.g., COVID
+positive → test positive). - <strong>TN (True Negative, 真阴)</strong>:
+Actual negative → predicted negative (e.g., COVID negative → test
+negative). - <strong>FP (False Positive, 假阳)</strong>: Actual negative
+→ predicted positive (e.g., COVID negative → test positive). -
+<strong>FN (False Negative, 假阴)</strong>: Actual positive → predicted
+negative (e.g., COVID positive → test negative).</p>
+<p>Using these, calculate core metrics: 1. <strong>Overall Accuracy
+(总体准确率)</strong>: - Formula: ( Accuracy = ) - Definition:
+Percentage of total predictions that are correct. - Limitation:
+Misleading for imbalanced data (e.g., 99% non-spam emails → predicting
+all as non-spam gives 99% accuracy but fails at detecting spam).</p>
+<ol start="2" type="1">
+<li><strong>Precision (精确率)</strong>:
+<ul>
+<li>Formula: ( Precision = )</li>
+<li>Definition: Percentage of predicted positives that are actually
+positive.<br>
+</li>
+<li>Use case: Critical when FP is costly (e.g., diagnosing a rare
+disease — avoid false positives that cause unnecessary treatment).</li>
+</ul></li>
+<li><strong>Recall (召回率/灵敏度)</strong>:
+<ul>
+<li>Formula: ( Recall = )</li>
+<li>Definition: Percentage of actual positives that are correctly
+predicted.<br>
+</li>
+<li>Use case: Critical when FN is costly (e.g., fraud detection — avoid
+missing actual fraud cases).</li>
+</ul></li>
+</ol>
+<h3 id="decision-tree-representation-决策树表示">Decision Tree
+Representation (决策树表示)</h3>
+<p>A decision tree is a hierarchical model for classification,
+consisting of three components: - <strong>Internal Nodes
+(内部节点)</strong>: Represent tests on a feature (e.g., “Is taxable
+income &gt; 80K?”). - <strong>Branches (Edges, 分支/边)</strong>:
+Represent outcomes of the test (e.g., “Yes” or “No” for the income
+test). - <strong>Leaf Nodes (叶节点)</strong>: Represent final class
+labels (e.g., “Cheat = Yes” or “Cheat = No”).</p>
+<h3 id="node-splitting-criteria-节点分裂标准">Node Splitting Criteria
+(节点分裂标准)</h3>
+<p>Nodes are split to create branches that are: - <strong>As similar as
+possible within (内部尽可能相似)</strong>: Most data points in a branch
+belong to the same class. - <strong>As different as possible among
+(外部尽可能不同)</strong>: Data points in different branches belong to
+different classes.</p>
+<h4 id="simple-example-binary-split-二分裂示例">Simple Example: Binary
+Split (二分裂示例)</h4>
+<p>Suppose we have a feature “Taxable Income” (numeric) and class
+“Cheat” (Yes/No): - Split the feature into two branches: “Income ≤ 80K”
+and “Income &gt; 80K”. - Goal: All “Cheat = Yes” cases fall into one
+branch, and “Cheat = No” into the other (ideal split). - Result: Branch
+1 (“≤80K”) has 90% “No” cases; Branch 2 (“&gt;80K”) has 70% “Yes” cases
+— split is effective!</p>
+<h2 id="clustering-method-聚类方法">Clustering Method (聚类方法)</h2>
+<p>Clustering is an unsupervised learning technique that groups
+unlabeled data into clusters (聚类) based on similarity.</p>
+<h3 id="what-is-clustering-聚类的含义">What is Clustering?
+(聚类的含义)</h3>
+<p>Clustering aims to: - Group objects with <strong>high similarity
+(高相似度)</strong> into the same cluster. - Ensure objects in different
+clusters have <strong>low similarity (低相似度)</strong>. - Discover
+hidden structures in data (e.g., customer groups with similar buying
+habits).</p>
+<h3 id="examples-of-clustering-applications-聚类的3个应用示例">3
+Examples of Clustering Applications (聚类的3个应用示例)</h3>
+<ol type="1">
+<li><strong>Customer Segmentation (客户细分)</strong>: Group customers
+by purchase frequency, spending amount, or product preferences to design
+targeted marketing campaigns.</li>
+<li><strong>Anomaly Detection (异常检测)</strong>: Identify unusual
+patterns (e.g., fraudulent transactions, faulty sensor readings) that
+don’t fit any cluster.</li>
+<li><strong>Text Document Clustering (文本文档聚类)</strong>: Group news
+articles, research papers, or social media posts by topic (e.g.,
+“politics”, “technology”, “sports”).</li>
+</ol>
+<h3 id="similarity-measures-manhattan-euclidean-distance-相似度度量曼哈顿距离与欧氏距离">Similarity
+Measures: Manhattan &amp; Euclidean Distance
+(相似度度量：曼哈顿距离与欧氏距离)</h3>
+<p>Similarity is often measured by <strong>distance (距离)</strong> —
+smaller distance = higher similarity. For two instances with two
+features (( x = (x_1, x_2) ) and ( y = (y_1, y_2) )):</p>
+<ol type="1">
+<li><strong>Manhattan Distance (曼哈顿距离)</strong>:
+<ul>
+<li>Formula: ( d_M(x, y) = |x_1 - y_1| + |x_2 - y_2| )</li>
+<li>Definition: Sum of the absolute differences of their coordinates
+(like walking city blocks).</li>
+<li>Example: Instance A (2, 3) and Instance B (5, 7) → ( d_M = |2-5| +
+|3-7| = 3 + 4 = 7 ).</li>
+</ul></li>
+<li><strong>Euclidean Distance (欧氏距离)</strong>:
+<ul>
+<li>Formula: ( d_E(x, y) = )</li>
+<li>Definition: Straight-line distance between two points in 2D
+space.</li>
+<li>Example: Instance A (2, 3) and Instance B (5, 7) → ( d_E = = = 5
+).</li>
+</ul></li>
+</ol>
+<h3 id="how-distance-is-used-for-clustering-距离如何用于聚类">How
+Distance is Used for Clustering (距离如何用于聚类)</h3>
+<p>Clustering algorithms use distance to group instances. Let’s take a
+simple example: - <strong>Data</strong>: 4 cars with two features:
+“Color (数值化: Red=1, Blue=2)” and “Speed (km/h: 100, 180)”. - Car 1:
+(1, 100) → Red, 100km/h - Car 2: (1, 110) → Red, 110km/h - Car 3: (2,
+180) → Blue, 180km/h - Car 4: (2, 170) → Blue, 170km/h -
+<strong>Distance Calculation</strong>: - Car 1 &amp; 2 (same color): (
+d_E = = 10 ) (small distance → same cluster). - Car 3 &amp; 4 (same
+color): ( d_E = = 10 ) (small distance → same cluster). - Car 1 &amp; 3
+(different color/speed): ( d_E = ≈ 80.01 ) (large distance → different
+clusters). - <strong>Result</strong>: Two clusters: {Car1, Car2} and
+{Car3, Car4} — grouped by color and speed similarity!</p>
+<hr>
+<p>Machine learning is all about turning data into actionable
+insights—whether predicting values with regression, classifying labels
+with decision trees, or finding hidden groups with clustering. These
+fundamentals will help you tackle real-world problems with
+confidence.</p>
+<p>Want to practice what you’ve learned? I can create a
+<strong>clustering distance calculation practice sheet</strong> with
+step-by-step examples for Manhattan/Euclidean distance, plus a small
+dataset to apply clustering. Would you like me to prepare that?</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Sarzn</div><div class="post-copyright__author_desc">我爱你，你爱我</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/')">带你入门数据处理3</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://bu.dusays.com/2025/10/15/68ee939b5087b.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68ee939b5087b.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2025/10/15/68eeb55ed61f7.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68eeb55ed61f7.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=带你入门数据处理3&amp;url=http://example.com/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>数据处理教学<span class="tagsPageCount">3</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/12/30/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%862/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">带你入门数据处理Chapter 2</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2025/12/30/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%862/" title="带你入门数据处理Chapter 2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-12-30</div><div class="title">带你入门数据处理Chapter 2</div></div></a></div><div><a href="/2025/12/28/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%861/" title="带你入门数据处理Chapter 1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-12-28</div><div class="title">带你入门数据处理Chapter 1</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> Comment</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68ee93517f8ee.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">一个为了水绿点图而不惜手段分享自己的学习经验的人</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Sarzn</h1><div class="author-info__desc">我爱你，你爱我</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/ahpasserby" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/1247707854" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-3-dive-into-machine-learning---from-regression-to-clustering"><span class="toc-text">Chapter
+3: Dive Into Machine Learning - From Regression to Clustering</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#introduction-to-machine-learning-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8"><span class="toc-text">Introduction to
+Machine Learning (机器学习入门)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#what-is-machine-learning-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">What is Machine
+Learning? (机器学习的定义)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#supervised-vs.-unsupervised-learning-%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0-vs.-%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">Supervised
+vs. Unsupervised Learning (有监督学习 vs. 无监督学习)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regression-vs.-classification-%E5%9B%9E%E5%BD%92-vs.-%E5%88%86%E7%B1%BB"><span class="toc-text">Regression
+vs. Classification (回归 vs. 分类)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sampling-for-model-evaluation-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E7%9A%84%E6%8A%BD%E6%A0%B7%E6%96%B9%E6%B3%95"><span class="toc-text">Sampling for
+Model Evaluation (模型评估的抽样方法)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linear-regression-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">Linear Regression (线性回归)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#key-terms-in-f_x-_0-_1-x"><span class="toc-text">Key Terms in ( f_(x) &#x3D; _0 + _1 x
+)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#simple-vs.-multiple-linear-regression-%E7%AE%80%E5%8D%95-vs.-%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">Simple
+vs. Multiple Linear Regression (简单 vs. 多元线性回归)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#how-to-plot-a-simple-linear-regression-model-%E7%BB%98%E5%88%B6%E7%AE%80%E5%8D%95%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="toc-text">How
+to Plot a Simple Linear Regression Model (绘制简单线性回归模型)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regression-model-evaluation-%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="toc-text">Regression Model
+Evaluation (回归模型评估)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#model-evaluation-selection-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9"><span class="toc-text">Model Evaluation
+&amp; Selection (模型评估与选择)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classification-%E5%88%86%E7%B1%BB"><span class="toc-text">Classification (分类)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#classification-accuracy-measures-%E5%88%86%E7%B1%BB%E5%87%86%E7%A1%AE%E7%8E%87%E6%8C%87%E6%A0%87"><span class="toc-text">Classification
+Accuracy Measures (分类准确率指标)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#decision-tree-representation-%E5%86%B3%E7%AD%96%E6%A0%91%E8%A1%A8%E7%A4%BA"><span class="toc-text">Decision Tree
+Representation (决策树表示)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-splitting-criteria-%E8%8A%82%E7%82%B9%E5%88%86%E8%A3%82%E6%A0%87%E5%87%86"><span class="toc-text">Node Splitting Criteria
+(节点分裂标准)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#simple-example-binary-split-%E4%BA%8C%E5%88%86%E8%A3%82%E7%A4%BA%E4%BE%8B"><span class="toc-text">Simple Example: Binary
+Split (二分裂示例)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clustering-method-%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="toc-text">Clustering Method (聚类方法)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#what-is-clustering-%E8%81%9A%E7%B1%BB%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-text">What is Clustering?
+(聚类的含义)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#examples-of-clustering-applications-%E8%81%9A%E7%B1%BB%E7%9A%843%E4%B8%AA%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">3
+Examples of Clustering Applications (聚类的3个应用示例)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#similarity-measures-manhattan-euclidean-distance-%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%BA%A6%E9%87%8F%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB%E4%B8%8E%E6%AC%A7%E6%B0%8F%E8%B7%9D%E7%A6%BB"><span class="toc-text">Similarity
+Measures: Manhattan &amp; Euclidean Distance
+(相似度度量：曼哈顿距离与欧氏距离)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#how-distance-is-used-for-clustering-%E8%B7%9D%E7%A6%BB%E5%A6%82%E4%BD%95%E7%94%A8%E4%BA%8E%E8%81%9A%E7%B1%BB"><span class="toc-text">How
+Distance is Used for Clustering (距离如何用于聚类)</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/31/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%863/" title="带你入门数据处理3">带你入门数据处理3</a><time datetime="2025-12-30T17:36:40.000Z" title="Created 2025-12-31 01:36:40">2025-12-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/30/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%862/" title="带你入门数据处理Chapter 2">带你入门数据处理Chapter 2</a><time datetime="2025-12-30T12:28:47.000Z" title="Created 2025-12-30 20:28:47">2025-12-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/28/%E5%B8%A6%E4%BD%A0%E5%85%A5%E9%97%A8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%861/" title="带你入门数据处理Chapter 1">带你入门数据处理Chapter 1</a><time datetime="2025-12-28T14:30:46.000Z" title="Created 2025-12-28 22:30:46">2025-12-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/16/cPorject%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E4%B8%8E%E5%8F%8D%E6%80%9D/" title="cPorject团队协作的改进与反思"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68eebb8d1ea47.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cPorject团队协作的改进与反思"/></a><div class="content"><a class="title" href="/2025/12/16/cPorject%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E4%B8%8E%E5%8F%8D%E6%80%9D/" title="cPorject团队协作的改进与反思">cPorject团队协作的改进与反思</a><time datetime="2025-12-16T15:11:11.000Z" title="Created 2025-12-16 23:11:11">2025-12-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/06/VScode%E4%B8%ADgcc%E7%BC%96%E8%AF%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E4%BB%8B%E7%BB%8D/" title="VScode中gcc编译配置文件tasks.json和launch.json的介绍"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/15/68eebb8d1ea47.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VScode中gcc编译配置文件tasks.json和launch.json的介绍"/></a><div class="content"><a class="title" href="/2025/12/06/VScode%E4%B8%ADgcc%E7%BC%96%E8%AF%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E4%BB%8B%E7%BB%8D/" title="VScode中gcc编译配置文件tasks.json和launch.json的介绍">VScode中gcc编译配置文件tasks.json和launch.json的介绍</a><time datetime="2025-12-05T19:23:33.000Z" title="Created 2025-12-06 03:23:33">2025-12-06</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-上班摸鱼中.svg" alt="距离月入25k也就还差一个大佬带我~" title="距离月入25k也就还差一个大佬带我~"/><div id="runtimeTextTip"></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://github.com/ahpasserby/ahpasserby.github.io" style="margin-inline:5px" data-title="本站项目由Github托管" title="本站项目由Github托管"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg" alt="本站项目由Github托管"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2025 By <a class="footer-bar-link" href="/" title="Sarzn" target="_blank">Sarzn</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        const from = '出自 ' + data.from
+        const sub = []
+        sub.unshift(data.hitokoto, from)
+        window.typed = new Typed('#footer-type-tips', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('footer-type-tips').innerHTML = data.hitokoto
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.1.0/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/ahpasserby/ahpasserby.github.io" title="仓库">仓库</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">Articles</div><div class="length-num">9</div></a><a href="/tags/" title="tag"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/" title="category"><div class="headline">Categories</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">Function</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="Display Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>Display Mode</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://sarzn.xyz/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/18/68f295f709d5f.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://ahpasserby.github.io/class/" title="八方来财"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/18/68f29aac52cfd.png" alt="八方来财"/><span class="back-menu-item-text">八方来财</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/ahpasserby" title="Github仓库"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/10/18/68f28ccb378b4.ico" alt="Github仓库"/><span class="back-menu-item-text">Github仓库</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 奇怪的东西</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://ahpasserby.github.io/heart/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 爱心</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/schoolProject/" style="font-size: 0.88rem;">schoolProject<sup>1</sup></a><a href="/tags/skillShare/" style="font-size: 0.88rem;">skillShare<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" style="font-size: 0.88rem;">数据处理教学<sup>3</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("15/10/2025 03:32:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2025 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Sarzn 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("15/10/2025 03:32:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-下班啦.svg";
+        img.title = "下班了就该开开心心的玩耍，嘿嘿~";
+        img.alt = "下班了就该开开心心的玩耍，嘿嘿~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.sarzn.xyz/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.sarzn.xyz/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[image]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[link]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[code]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.sarzn.xyz/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "Unable to get the data, please make sure the settings are correct."
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += 'No Comment'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
