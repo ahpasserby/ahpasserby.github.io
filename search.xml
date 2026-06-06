@@ -4,11 +4,24 @@
   
     
     <entry>
+      <title>Quick Start</title>
+      <link href="/2026/06/06/Quick%20Start/"/>
+      <url>/2026/06/06/Quick%20Start/</url>
+      
+        <content type="html"><![CDATA[<h2 id="quick-start">Quick Start</h2><h3 id="新建博文命令">新建博文命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 这是一篇新的博文</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="新建标签页命令">新建标签页命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 新建的标签页</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="本地预览">本地预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo s</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="推送更新上线">推送更新上线</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><p>指导文档 <a class="btn-anzhiyu " href="https://butterfly.js.org/posts/ceeb73f/#%E8%A9%95%E8%AB%96" title="文档"><i class="far fa-hand-point-right"></i><span>文档</span></a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>1.1 GPIO 输出电压 - 实验篇</title>
       <link href="/2026/06/06/1.1%20GPIO%20%E8%BE%93%E5%87%BA%E7%94%B5%E5%8E%8B%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/"/>
       <url>/2026/06/06/1.1%20GPIO%20%E8%BE%93%E5%87%BA%E7%94%B5%E5%8E%8B%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>经过了刚刚原理部分的学习, 你已经对这个陌生的单片机有了一定的信心,那么接下来我们开始实操吧!</p></blockquote><p>注意观察, 这是一篇结构较为严谨的博客, 你可以从旁边的目录看到每一个Step 之后所有的实验篇, 将遵循</p><p>Step X - 对应说明 1. 具体步骤 1 - 步骤的解释 1 - 步骤的解释 2 2.具体步骤 2</p><p>希望这样的结构严谨的文章对你的学习会有帮助 !</p><p>般情况下，都是使用HSE，然后将HSE经过PLL倍频之后作为系统时钟。通常的配置是：HSE=8MHz，PLL的倍频因子为9，系统时钟就设置成SYSCLK=8M×9=72MHz。使用HSE，系统时钟SYSCLK最高是128MHz</p><hr><p><strong>这一部分是最基础的构建整个工程的部分.今后你的每个<code>新工程</code>都要进行如下的步骤来进行相应的配置</strong></p><h2 id="step-1---芯片选型">Step 1 - 芯片选型</h2><ol type="1"><li>打开 CubeMX</li><li>搜索并选择对应型号的 MCU 芯片</li></ol><p><img src="https://bu.dusays.com/2026/06/06/6a22f69788499.png" alt="Pasted image 20260606001726" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="step2---工程配置">Step2 - 工程配置</h2><ol type="1"><li>配置复位时钟控制器 (RCC) - Reset Clock Control<ul><li>配置成<strong>晶振 - Crystal/ceramic resonator</strong></li><li>注意观察, 点选之后,你的<em>页面发生了怎样的变化?(说明了什么?)</em></li><li><img src="https://bu.dusays.com/2026/06/06/6a22f7f0b4c10.png" alt="Pasted image 20260606002311" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></li></ul></li><li>配置时钟树 - Clock Configuration<ul><li><p><strong>HSE 一般设置为 8MHz</strong> &gt;通过开发板晶振的频率来设置 HSE 的频率,这里我们采用的芯片(F103C8T6)</p></li><li><p>梯形框框 - <strong>PLL</strong> Source Mux (PLL时钟源选择器)选择<strong>主频通过 HSE 输出</strong> &gt; 还记得PLL吗?,这个梯形是时钟源选择器, 是选择 PLL 的输入时钟, 不是 PLL 哦)</p></li><li><p>通过 <strong>PLL 倍率设置 - PLLMul</strong> 将<strong>系统时钟 -SYSCLK</strong>配置成 <strong>72MHz</strong> &gt;如果你激起了有关时钟的好奇心那么详细细节请看番外篇</p></li></ul></li></ol><p>配置如下图所示<img src="https://bu.dusays.com/2026/06/06/6a23156a1f00e.png" alt="Pasted image 20260606022856" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">小练习: 用你自己的话说一说图上的这个过程吧!注意我用绿色剪头标注的小节点都是什么意思 - 将回答写在下方的评论区</p>]]></content>
+        <content type="html"><![CDATA[<blockquote><p>经过了刚刚原理部分的学习, 你已经对这个陌生的单片机有了一定的信心,那么接下来我们开始实操吧!</p></blockquote><p>注意观察, 这是一篇结构较为严谨的博客, 你可以从旁边的目录看到每一个Step 之后所有的实验篇, 将遵循</p><p>Step X - 对应说明</p><ol type="1"><li>具体步骤 1<ul><li>步骤的解释 1</li><li>步骤的解释 2</li></ul></li><li>具体步骤 2</li></ol><p>希望这样的结构严谨的文章对你的学习会有帮助 !</p><hr><p><strong>这一部分是最基础的构建整个工程的部分.今后你的每个<code>新工程</code>都要进行如下的步骤来进行相应的配置</strong></p><h2 id="step-1---芯片选型">Step 1 - 芯片选型</h2><ol type="1"><li>打开 CubeMX</li><li>搜索并选择对应型号的 MCU 芯片</li></ol><p><img src="https://bu.dusays.com/2026/06/06/6a22f69788499.png" alt="Pasted image 20260606001726" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="step2---工程配置">Step2 - 工程配置</h2><ol type="1"><li>配置复位时钟控制器 (RCC) - Reset Clock Control<ul><li>配置成<strong>晶振 - Crystal/ceramic resonator</strong></li><li>注意观察, 点选之后,你的<em>页面发生了怎样的变化?(说明了什么?)</em></li><li><img src="https://bu.dusays.com/2026/06/06/6a22f7f0b4c10.png" alt="Pasted image 20260606002311" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></li></ul></li><li>配置时钟树 - Clock Configuration<ul><li><p><strong>HSE 一般设置为 8MHz</strong> &gt;通过开发板晶振的频率来设置 HSE 的频率,这里我们采用的芯片(F103C8T6)</p></li><li><p>梯形框框 - <strong>PLL</strong> Source Mux (PLL时钟源选择器)选择<strong>主频通过 HSE 输出</strong> &gt; 还记得PLL吗?,这个梯形是时钟源选择器, 是选择 PLL 的输入时钟, 不是 PLL 哦)</p></li><li><p>通过 <strong>PLL 倍率设置 - PLLMul</strong> 将<strong>系统时钟 -SYSCLK</strong>配置成 <strong>72MHz</strong> &gt;如果你激起了有关时钟的好奇心那么详细细节请看番外篇</p></li></ul></li></ol><p>配置如下图所示</p><p><img src="https://bu.dusays.com/2026/06/06/6a23156a1f00e.png" alt="Pasted image 20260606022856" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><p>小练习: 用你自己的话说一说图上的这个过程吧!注意我用绿色剪头标注的小节点都是什么意思 - 将回答写在下方的评论区</p>]]></content>
       
       
       <categories>
@@ -23,19 +36,6 @@
             <tag> RM电控集合 </tag>
             
         </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Quick Start</title>
-      <link href="/2026/06/05/Quick%20Start/"/>
-      <url>/2026/06/05/Quick%20Start/</url>
-      
-        <content type="html"><![CDATA[<h2 id="quick-start">Quick Start</h2><h3 id="新建博文命令">新建博文命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 这是一篇新的博文</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="新建标签页命令">新建标签页命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 新建的标签页</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="本地预览">本地预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo s</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="推送更新上线">推送更新上线</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><p>指导文档 <a class="btn-anzhiyu " href="https://butterfly.js.org/posts/ceeb73f/#%E8%A9%95%E8%AB%96" title="文档"><i class="far fa-hand-point-right"></i><span>文档</span></a></p>]]></content>
-      
-      
       
     </entry>
     
