@@ -5,8 +5,8 @@
     
     <entry>
       <title>Quick Start</title>
-      <link href="/2026/06/14/Quick%20Start/"/>
-      <url>/2026/06/14/Quick%20Start/</url>
+      <link href="/2026/06/17/Quick%20Start/"/>
+      <url>/2026/06/17/Quick%20Start/</url>
       
         <content type="html"><![CDATA[<h2 id="quick-start">Quick Start</h2><h3 id="新建博文命令">新建博文命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 这是一篇新的博文</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="新建标签页命令">新建标签页命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 新建的标签页</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="本地预览">本地预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo s</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="推送更新上线">推送更新上线</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><p>指导文档 <a class="btn-anzhiyu " href="https://butterfly.js.org/posts/ceeb73f/#%E8%A9%95%E8%AB%96" title="文档"><i class="far fa-hand-point-right"></i><span>文档</span></a></p>]]></content>
       
@@ -295,6 +295,19 @@
       <title>Test Obsidian</title>
       <link href="/2026/05/03/Test%20Obsidian/"/>
       <url>/2026/05/03/Test%20Obsidian/</url>
+      
+        <content type="html"><![CDATA[<p>将 Obsidian 接入我的 Blog。这是第一篇的测试 Mac Android 1</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Test Obsidian</title>
+      <link href="/2026/05/03/%E3%80%90%E6%95%B0%E6%A8%A1%E3%80%91Latex%20%E4%B8%8E%20MATLAB%20%E7%9A%84%E4%B8%8B%E8%BD%BD/"/>
+      <url>/2026/05/03/%E3%80%90%E6%95%B0%E6%A8%A1%E3%80%91Latex%20%E4%B8%8E%20MATLAB%20%E7%9A%84%E4%B8%8B%E8%BD%BD/</url>
       
         <content type="html"><![CDATA[<p>将 Obsidian 接入我的 Blog。这是第一篇的测试 Mac Android 1</p>]]></content>
       
