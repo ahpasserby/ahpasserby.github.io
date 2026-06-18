@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>【数模算法】Topsis法</title>
+      <link href="/2026/06/18/1.2%20%E3%80%90%E6%95%B0%E6%A8%A1%E7%AE%97%E6%B3%95%E3%80%91Topsis%E6%B3%95/"/>
+      <url>/2026/06/18/1.2%20%E3%80%90%E6%95%B0%E6%A8%A1%E7%AE%97%E6%B3%95%E3%80%91Topsis%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="层次分析法的具象理解">层次分析法的具象理解</h1><blockquote><p><strong>Topsis 法</strong>是从现有评价目标中,构建出<strong>最优目标</strong>和<strong>最劣目标</strong>,计算各个评价与最优目标和最劣目标的<strong>距离</strong>,得出其与理想化目标的<strong>相对接近程度并排序</strong></p></blockquote><p>示范: 我们有一个这样的案例<img src="https://bu.dusays.com/2026/06/16/6a3151a1ac8ea.png" alt="Pasted image 20260616213736" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">我们需要找到 - <strong>最优方案</strong>:是每个指标实际出现的<strong>最大值</strong> - <strong>最差方案</strong>:是每个指标实际出现的<strong>最小值</strong></p><p>然后我们通过计算<strong>各个不同方案</strong>与最优目标和最劣目标的<strong>距离</strong>,再按照相对接近程度进行排序<img src="https://bu.dusays.com/2026/06/16/6a3152bed53c5.png" alt="Pasted image 20260616214221" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><blockquote><p>评价结果的最优解必须是<strong>最接近最优解</strong>的同时<strong>最远离最劣解</strong>的方案</p></blockquote><hr><h1 id="进行的流程">进行的流程</h1><h2 id="第一步-原始矩阵正向化">第一步:<strong>原始矩阵正向化</strong></h2><p>什么是正向化为什么需要正向化? 不同的指标的”最好”是不一样的,比如下面这个例子<img src="https://bu.dusays.com/2026/06/17/6a3295a60edd1.png" alt="Pasted image 20260617204004" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><ul><li><strong>极大型指标</strong> - 师资,师资我们希望<strong>越大越好</strong></li><li><strong>极小型指标</strong> - 学费,学费我们希望<strong>越低越好</strong></li><li><strong>中间型指标</strong> - 班级人数, 我们希望<strong>40人最好</strong></li><li><strong>区间型指标</strong> - 年均气温, 希望在<strong>16 - 18度之间最好</strong></li></ul><p><strong>那么根据下面的公式确定数据的类型并且对它进行正向化</strong><img src="https://bu.dusays.com/2026/06/18/6a33daa0626ae.png" alt="Pasted image 20260618194636" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">正向化后得到矩阵如下:<img src="https://bu.dusays.com/2026/06/18/6a33de500ee2a.png" alt="Pasted image 20260618200222" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="第二步-正向化矩阵标准化---消除量纲">第二步:<strong>正向化矩阵标准化 - 消除量纲</strong></h2><p>我们一定要<strong>根据正向化矩阵来进行标准化</strong>,不能用原始矩阵</p><p>公式如下:<img src="https://bu.dusays.com/2026/06/18/6a33de8694603.png" alt="Pasted image 20260618200316" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><p>标准化之后矩阵如下:</p><p><img src="https://bu.dusays.com/2026/06/18/6a33debc57bb3.png" alt="Pasted image 20260618200410" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="第三步-找出理想最优解和理想最劣解">第三步:<strong>找出理想最优解和理想最劣解</strong></h2><p>根据标准化之后的矩阵再找出理想最优解(最大值)理想最劣解(最小值)<img src="https://bu.dusays.com/2026/06/18/6a33df8a7d1e8.png" alt="Pasted image 20260618200737" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="第四步-给指标定权重">第四步: <strong>给指标定权重</strong></h2><p>我们可以使用诸如<strong>层次分析法, 熵权法, Delphi 法,对数最小二乘法</strong>等等方法确定各个指标的权重</p><p>在这个文档的例题中我直接认为各个指标的权重相同, 都是 0.25</p><h2 id="第五步-计算各个方案与最优解和最劣解的距离">第五步:<strong>计算各个方案与最优解和最劣解的距离</strong></h2><p>通过下面这个欧氏距离公式来求距离<img src="https://bu.dusays.com/2026/06/18/6a33e0fb8c35c.png" alt="Pasted image 20260618201346" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">公式细看与结果 求出来的距离如下:<img src="https://bu.dusays.com/2026/06/18/6a33e20ef1e1f.png" alt="Pasted image 20260618201821" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><h2 id="第六步-根据距离求最终得分">第六步:<strong>根据距离求最终得分</strong></h2><p><img src="https://bu.dusays.com/2026/06/18/6a33e2953e051.png" alt="Pasted image 20260618202032" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数模学习记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Quick Start</title>
       <link href="/2026/06/18/Quick%20Start/"/>
       <url>/2026/06/18/Quick%20Start/</url>
