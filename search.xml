@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>番外篇 - GPIO 配置里的Maximum output speed</title>
+      <link href="/2026/06/20/%E7%95%AA%E5%A4%96%E7%AF%87%20-%20GPIO%20%E9%85%8D%E7%BD%AE%E9%87%8C%E7%9A%84Maximum%20output%20speed/"/>
+      <url>/2026/06/20/%E7%95%AA%E5%A4%96%E7%AF%87%20-%20GPIO%20%E9%85%8D%E7%BD%AE%E9%87%8C%E7%9A%84Maximum%20output%20speed/</url>
+      
+        <content type="html"><![CDATA[<p><code>Maximum output speed</code>:指的是引脚输出驱动器的<strong>翻转速率(slewrate)</strong>,也就是引脚电平在高低之间切换时,边沿能跳得多快(上升/下降时间多短),而不是指你能多快地去翻转这个引脚</p><p>打个最贴切的比方——把它想成<strong>拧水龙头</strong>:</p><ul><li><code>你多久开关一次水龙头</code>这是你程序里翻转引脚的频率(闪灯快慢),由你的代码决定,跟这个设置无关</li><li><code>你是猛地一拧还是慢慢拧</code> <strong>这才是 Maximum outputspeed 管的东西</strong></li></ul><p>不论你是猛拧还是慢拧,最后流出来的水是一样多的(电平照样到 3.3V 或 0V)区别在于: 猛地一拧,水管会”哐”地震一下; 慢慢拧,水流则平稳没声音电路里也是一模一样的道理,如果边沿跳得太猛,会产生电磁干扰和信号上的振铃/过冲</p><p>在下面这张图中,两条波形<strong>开关的次数完全一样(频率相同)</strong>,唯一的区别就是每次跳变的陡峭程度,看图就很清楚了</p><p><img src="https://bu.dusays.com/2026/06/20/6a368510d1333.png" alt="Pasted image 20260620201823" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><blockquote><p>那为什么不一律选高速,跳得越快越好?</p></blockquote><p>因为陡峭的边沿有缺点:</p><ul><li><strong>跳得越陡(速度高)</strong>:好处是能输出很快的信号(比如高速SPI、高频时钟);坏处是电磁干扰(EMI)更大、更费电,而且容易在信号上产生过冲和振铃</li><li><strong>跳得越缓(速度低)</strong>:信号更干净、更省电、干扰更小;坏处是不适合用在需要很快的信号上</li></ul><p><strong>按你实际需要的信号速度来配,够用就行,别盲目往高调</strong></p><p>如果是使用 PC13 点灯:LED亮灭对芯片来说慢得像蜗牛,根本不需要陡峭的边沿,所以 CubeMX 里配成<strong>Low 是最合适的</strong>又省电、干扰又小</p><p>做高速通信(SPI/I2S、几十 MHz的时钟输出之类)时,才需要把这个档位往上调</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> RM电控集合 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Quick Start</title>
       <link href="/2026/06/20/Quick%20Start/"/>
       <url>/2026/06/20/Quick%20Start/</url>
