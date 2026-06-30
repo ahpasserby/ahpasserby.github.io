@@ -4,13 +4,63 @@
   
     
     <entry>
+      <title>1.5 PWM呼吸灯 - 实验篇</title>
+      <link href="/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/"/>
+      <url>/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/</url>
+      
+        <content type="html"><![CDATA[<p>这个实验中我们将实现呼吸灯</p><hr><h1 id="硬件电路连接">硬件电路连接</h1><p><img src="https://bu.dusays.com/2026/07/01/6a43f37629dc7.png" alt="Pasted image 20260701004853" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><ul><li>我们使用TIM3 CH1 (channel 1)来输出 PWM 波</li><li>单片机的最高输出电压是 3.3v</li><li>LED 正常降压 1.5v 以上, 电流约 5mA</li></ul><p>经过算计, 电阻两端电压约为 1.8v, 我们需要 360Ω左右的电阻(上下不超过 5倍都行, 即 180 - 1800Ω)</p><p><strong>电阻色环:</strong> 4 色环颜色 220Ω = 红红棕金,330Ω =橙橙棕金,1kΩ =棕黑红金<img src="https://bu.dusays.com/2026/07/01/6a44021a30638.png" alt="Pasted image 20260701015055" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">多色环:<img src="https://bu.dusays.com/2026/07/01/6a44023477a01.png" alt="Pasted image 20260701015141" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">其实我自己实验的时候没有电阻也成功了…</p><hr><h1 id="cubemx的配置">CubeMX的配置</h1><p>还是老样子, 配置出一个 cmake 工程</p><ul><li><p>在 TIM3 中勾选使用内部时钟, 并且使能CH1<img src="https://bu.dusays.com/2026/07/01/6a43f59a2f1c6.png" alt="Pasted image 20260701005801" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p></li><li><p>将 TIM3时钟如图配置<img src="https://bu.dusays.com/2026/07/01/6a43f7c7b7451.png" alt="Pasted image 20260701010718" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p></li></ul><table><colgroup><col style="width: 22%"><col style="width: 25%"><col style="width: 51%"></colgroup><thead><tr class="header"><th>配置项</th><th>含义</th><th>说明</th></tr></thead><tbody><tr class="odd"><td><strong>Prescaler (PSC)</strong></td><td>预分频值</td><td>就是公式里的 PSC。填 <code>7199</code> = 输入时钟 ÷ 1000</td></tr><tr class="even"><td><strong>Counter Mode</strong></td><td>计数模式</td><td><code>Up</code> = 向上计数</td></tr><tr class="odd"><td><strong>Counter Period (ARR)</strong></td><td>自动装载值</td><td>就是公式里的 ARR。填 <code>99</code> = 数100 个后溢出(10ms)</td></tr><tr class="even"><td><strong>Internal Clock Division (CKD)</strong></td><td>内部时钟分频</td><td>用于输入滤波等高级场景,初学<strong>保持 No Division</strong>即可</td></tr><tr class="odd"><td><strong>auto-reload preload</strong></td><td>ARR 预装载</td><td>随意</td></tr><tr class="even"><td><strong>Trigger Output (TRGO) Parameters</strong></td><td>Trigger Output (TRGO) 参数</td><td>保持默认即可, 这组参数是用来定时器之间联动</td></tr><tr class="odd"><td><strong>PWM mode</strong></td><td>分为 mode1 和 mode2</td><td><strong>mode 1</strong>:CNT &lt; CCR 输出有效电平,CNT ≥ CCR输出无效电平<br>mode2 相反</td></tr><tr class="even"><td><strong>Pulse (16 bits value)</strong></td><td>CCR 的初值</td><td>CCR(比较寄存器)的初值,真正调整亮度时再用<code>__HAL_TIM_SET_COMPARE(&amp;htim3, TIM_CHANNEL_1, value)</code>写就行</td></tr><tr class="odd"><td><strong>Output compare preload(OCxPE)</strong></td><td>和上面那个auto-reload preload 一样, 是CCR 版的 ARPE</td><td>Enable 时你写进 CCR 的新值不会立刻生效,而是先缓存,等下一次Update(溢出)事件才整体载入</td></tr><tr class="even"><td><strong>Fast Mode</strong></td><td>快速模式</td><td>选择 Disable<br>正常时 CNT 命中 CCR 到输出翻转有几个时钟延迟; FastMode 在某些触发场景让输出立即翻转</td></tr><tr class="odd"><td><strong>CH Polarity</strong></td><td>有效电平的极性</td><td>Hige 说敏有效电平是高(是 PWMmode 那个有效电平); Low = 有效是低</td></tr></tbody></table><hr><h1 id="代码">代码</h1><h2 id="step-1---声明-ccr-变量">Step 1 - 声明 CCR 变量</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN PV */</span>  </span><br><span class="line"><span class="type">uint16_t</span> ccrVal = <span class="number">0</span>;  </span><br><span class="line"><span class="comment">/* USER CODE END PV */</span></span><br></pre></td></tr></table></figure><h2 id="step-2---使能定时器的-pwm-输出通道">Step 2 - 使能定时器的 PWM输出通道</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 2 */</span>  </span><br><span class="line">HAL_TIM_PWM_Start(&amp;htim3, TIM_CHANNEL_1);  </span><br><span class="line"><span class="comment">/* USER CODE END 2 */</span></span><br></pre></td></tr></table></figure><h2 id="step-3---主函数">Step 3 - 主函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="comment">/* Infinite loop */</span>  </span><br><span class="line"><span class="comment">/* USER CODE BEGIN WHILE */</span>  </span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)  </span><br><span class="line">{  </span><br><span class="line">  <span class="keyword">while</span> (ccrVal &lt; <span class="number">100</span>)  </span><br><span class="line">  {  </span><br><span class="line">    ccrVal++;  </span><br><span class="line">    __HAL_TIM_SET_COMPARE(&amp;htim3, TIM_CHANNEL_1, ccrVal);  </span><br><span class="line">    HAL_Delay(<span class="number">10</span>);  </span><br><span class="line">  }  </span><br><span class="line">  <span class="keyword">while</span> (ccrVal &gt; <span class="number">0</span>)  </span><br><span class="line">  {  </span><br><span class="line">    ccrVal--;  </span><br><span class="line">    __HAL_TIM_SET_COMPARE(&amp;htim3, TIM_CHANNEL_1, ccrVal);  </span><br><span class="line">    HAL_Delay(<span class="number">10</span>);  </span><br><span class="line">  }  </span><br><span class="line">  HAL_Delay(<span class="number">200</span>);  </span><br><span class="line">  <span class="comment">/* USER CODE END WHILE */</span>  </span><br><span class="line">  </span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 3 */</span>}  </span><br><span class="line"><span class="comment">/* USER CODE END 3 */</span></span><br></pre></td></tr></table></figure><hr><h1 id="函数__hal_tim_set_compare">函数<code>__HAL_TIM_SET_COMPARE</code></h1><p>它的作用是代码运行时更改占空比,具体来说是把一个值写进通道对应的比较寄存器 CCRx</p><p>本质上约等于:</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TIM3-&gt;CCR1 = ccrVal;   </span><br></pre></td></tr></table></figure><hr><h1 id="流程分析">流程分析</h1><p>TIM3 的计数器以每秒数一万个的速度向前数数(PSC), 数到 100的时候就停下从 0 重新数(ARR), 我们确定一条线,数字低于这条线灯就亮(ccrVal). 一开始这条线是 0(Pulse),这就导致灯没有机会亮, 占空比为 0%. 随后这条线慢慢变高, 灯越来越亮…</p><p>呼吸灯就实现了!</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> RM电控集合 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Quick Start</title>
-      <link href="/2026/06/25/Quick%20Start/"/>
-      <url>/2026/06/25/Quick%20Start/</url>
+      <link href="/2026/06/30/Quick%20Start/"/>
+      <url>/2026/06/30/Quick%20Start/</url>
       
         <content type="html"><![CDATA[<h2 id="quick-start">Quick Start</h2><h3 id="新建博文命令">新建博文命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 这是一篇新的博文</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="新建标签页命令">新建标签页命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 新建的标签页</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="本地预览">本地预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo s</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="推送更新上线">推送更新上线</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><p>指导文档 <a class="btn-anzhiyu " href="https://butterfly.js.org/posts/ceeb73f/#%E8%A9%95%E8%AB%96" title="文档"><i class="far fa-hand-point-right"></i><span>文档</span></a></p>]]></content>
       
       
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.5 PWM呼吸灯</title>
+      <link href="/2026/06/27/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF/"/>
+      <url>/2026/06/27/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF/</url>
+      
+        <content type="html"><![CDATA[<h1 id="pwm-波">PWM 波</h1><p><img src="https://bu.dusays.com/2026/06/27/6a3f8ca3271e1.png" alt="Pasted image 20260627164106" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><p><strong>脉宽调制</strong>(<strong>P</strong>ulse<strong>W</strong>idth <strong>M</strong>odulation,<strong>PWM</strong>)</p><p>他本质上是一种方波, 具有如下属性</p><ul><li><strong>周期</strong>: 一个周期所占用的时间, 图上是 4e-3s</li><li><strong>频率</strong>: 周期的倒数, 也就是一秒钟有多少个完整的周期,图上是 250Hz(1 / 4e-3)</li><li><strong>占空比</strong>:<strong><em>高电平</em></strong>持续时间占一周期的比值, 这里是25%(1/4)</li><li><strong>电平</strong>(类似振幅?): 高低电平的电压差(我们这里的是3.3v)</li></ul><hr><h2 id="pwm-波在-tim-定时器中的形成方式">PWM 波在 TIM定时器中的形成方式</h2><p>首先TIM定时器会将输入频率根据PSC进行预分频为定时器主频,之后以向上计数为例, CNT 从 0 增加到 ARR</p><p>我们引入一个新的量为<strong>比较值(Capture Compare Register,CCR)</strong>, 然后我们在代码中设定: <em>当 CNT &lt; CCR的时候输出一种电平, CNT &gt; CCR 的时候输出另一种电平</em></p><p><img src="https://bu.dusays.com/2026/07/01/6a43eb92237f9.png" alt="Pasted image 20260701001512" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p><p>如上图所示⬆️, 这样我们还可以确定这个 PWM 波的占空比了</p><hr><h1 id="呼吸灯">呼吸灯</h1><p>人眼在超过60Hz 的灯光变化会产生<strong>视觉暂留现象</strong></p><p>依照上面的图片, 占空比是描述电平 1 的时间所占一周期总时间的比值</p><p>我们使用高频的 PWM 波 - 如果这个波的占空比越大, 比如占空比为 80%,我们人眼观察到的灯光是较亮的(因为 电平 1 的比值大, 亮着的时间长) -如果这个波的占空比较小, 我们人眼看到的灯光是较暗的</p><p>现在我们知道, 我们可以通过改变PWM 波的占空比来调节灯的亮度,那么我们如何实现呼吸灯呢?</p><p>答案就是我们<strong>动态的去调节 PWM 波的占空比, 也就是说动态的去改变CCR 的值</strong>, 当变化 CCR 的时间间隔足够小, 就会产生视觉暂留效应,于是觉得灯是连续变化的(亮度是连续的, 亮度的变化也是连续的) 可以发现,如果我的占空比一开始是 10% , 此时是较暗的, 然后占空比慢慢提高,灯慢慢变亮, 最后占空比达到 100% 灯最亮. 这样就实现了呼吸灯</p><hr><h1 id="硬件电路连接">硬件电路连接</h1><p><img src="https://bu.dusays.com/2026/07/01/6a43f37629dc7.png" alt="Pasted image 20260701004853" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> RM电控集合 </tag>
+            
+        </tags>
       
     </entry>
     
