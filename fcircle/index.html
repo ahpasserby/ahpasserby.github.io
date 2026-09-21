@@ -60,7 +60,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-09-21 13:24:36',
+  postUpdate: '2026-09-21 14:26:16',
   postMainColor: '',
 }</script><noscript><style type="text/css">
   #nav {
@@ -479,42 +479,7 @@ queueMicrotask(() => {
     updateTime();
     updateHtml();
   }, 1000);
-})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      tags: 'ams'
-    },
-    chtml: {
-      scale: 1.1
-    },
-    options: {
-      renderActions: {
-        findScript: [10, doc => {
-          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
-            const display = !!node.type.match(/; *mode=display/)
-            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
-            const text = document.createTextNode('')
-            node.parentNode.replaceChild(text, node)
-            math.start = {node: text, delim: '', n: 0}
-            math.end = {node: text, delim: '', n: 0}
-            doc.math.push(math)
-          }
-        }, '']
-      }
-    }
-  }
-  
-  const script = document.createElement('script')
-  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
-  script.id = 'MathJax-script'
-  script.async = true
-  document.head.appendChild(script)
-} else {
-  MathJax.startup.document.state(0)
-  MathJax.texReset()
-  MathJax.typesetPromise()
-}</script><script>(() => {
+})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
   const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
   if ($mermaid.length === 0) return
   const runMermaid = () => {

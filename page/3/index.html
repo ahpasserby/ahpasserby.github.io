@@ -60,7 +60,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-09-21 13:25:16',
+  postUpdate: '2026-09-21 14:26:55',
   postMainColor: '',
 }</script><noscript><style type="text/css">
   #nav {
@@ -401,8 +401,9 @@ CAN1: PD0, P ...</div></div></div><div class="recent-post-item" onclick="pjax.lo
 
 与之前我们学习到的UART 通信协议一样, CAN
 通信以及所有的通信协议都需要具有通信分层的思想, 物理信号层, 链路传输层,
-应用数据层(可以回看之前 UART 的那一章)[[1.4 UART通信|1.4 UART通信]] #
-CAN - Controller Area Network
+应用数据层(可以回看之前 UART 的那一章)[[1.4 UART通信|1.4 UART通信]]
+CAN - Controller Area
+Network
 CAN 的接线方式, 每个设备接出两根线 CAN_H 和
 CAN_L, 不同设备的 CAN_H 相互接在一起, CAN_L
 相互接在一起
@@ -417,7 +418,8 @@ CAN_H 和 CAN_L 通过两个 120Ω的电阻连接在一起, 将总线阻抗变�
 因为有效信息码元直接对应二进制码元
 
 异步通信 – 物理层
-还记得我们之前学习的 UART 通信吗? ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.6 ADC - 实验篇">Unread</a></div><a class="article-title" href="/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.6 ADC - 实验篇">1.6 ADC - 实验篇</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-03T20:57:32.000Z" title="Created 2026-07-03 20:57:32" time="2026-07-03 20:57:32">2026-07-03</time><time class="time_hidden" datetime="2026-07-03T20:57:35.000Z" title="Updated 2026-07-03 20:57:35" time="2026-07-03 20:57:35">2026-07-03</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">使用 ADC 模块测电压
+还记得我们之前学习的 UART 通信吗?
+他 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.6 ADC - 实验篇">Unread</a></div><a class="article-title" href="/2026/07/03/1.6%20ADC%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.6 ADC - 实验篇">1.6 ADC - 实验篇</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-03T20:57:32.000Z" title="Created 2026-07-03 20:57:32" time="2026-07-03 20:57:32">2026-07-03</time><time class="time_hidden" datetime="2026-07-03T20:57:35.000Z" title="Updated 2026-07-03 20:57:35" time="2026-07-03 20:57:35">2026-07-03</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">使用 ADC 模块测电压
 
 接线
 既然是ADC有关实验, 那么我们不可避免的要使用电源进行测电压的操作
@@ -433,7 +435,7 @@ CubeMX
 来到时钟树, 配置 ADC 的预分频器 PSC, 选择分频 6 倍, 因为这个 ADC
 设备最高接受 14MHz
 频率
-## ADCs_Common_Settings
+ADCs_Common_Settings
 
 
 
@@ -480,7 +482,7 @@ DC 是 12 位,但数据寄存器 ADC_DR 是 16 位,
 
 Scan Conversion Mode
 扫描模式
-如果你只有一个通道直 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/03/1.6%20ADC/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/03/1.6%20ADC/" title="1.6 ADC">Unread</a></div><a class="article-title" href="/2026/07/03/1.6%20ADC/" title="1.6 ADC">1.6 ADC</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-03T20:25:24.000Z" title="Created 2026-07-03 20:25:24" time="2026-07-03 20:25:24">2026-07-03</time><time class="time_hidden" datetime="2026-07-03T20:25:28.000Z" title="Updated 2026-07-03 20:25:28" time="2026-07-03 20:25:28">2026-07-03</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">模拟信号与数字信号
+如果你只有一个通道直接 D ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/03/1.6%20ADC/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/03/1.6%20ADC/" title="1.6 ADC">Unread</a></div><a class="article-title" href="/2026/07/03/1.6%20ADC/" title="1.6 ADC">1.6 ADC</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-03T20:25:24.000Z" title="Created 2026-07-03 20:25:24" time="2026-07-03 20:25:24">2026-07-03</time><time class="time_hidden" datetime="2026-07-03T20:25:28.000Z" title="Updated 2026-07-03 20:25:28" time="2026-07-03 20:25:28">2026-07-03</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">模拟信号与数字信号
 模拟信号
 
 模拟信号是时间和数值上连续的信号
@@ -536,12 +538,20 @@ ADC 转换
 小车 7 天, 大车 30天
 
 一分:
-不年检, 违规用灯, 违标违线, 不系安全带, 长宽高超限  #
-三分: 不按规定放置警告标志 打电话, 不按车道行驶, 拥堵占道, 不让校车/行人
- # 六分: 不按灯通行, 未挂警示标志  # 九分:
+不年检, 违规用灯, 违标违线, 不系安全带, 长宽高超限
+
+三分:
+不按规定放置警告标志 打电话, 不按车道行驶, 拥堵占道,
+不让校车/行人
+
+六分:
+不按灯通行, 未挂警示标志
+
+九分:
 驾驶与准驾车型不符的机动车一次记9分，并可能面临200元至2000元罚款及行政拘留
 
-高速, 城市 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.5 PWM呼吸灯 - 实验篇">Unread</a></div><a class="article-title" href="/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.5 PWM呼吸灯 - 实验篇">1.5 PWM呼吸灯 - 实验篇</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-01T00:49:45.000Z" title="Created 2026-07-01 00:49:45" time="2026-07-01 00:49:45">2026-07-01</time><time class="time_hidden" datetime="2026-07-01T00:49:49.000Z" title="Updated 2026-07-01 00:49:49" time="2026-07-01 00:49:49">2026-07-01</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">这个实验中我们将实现呼吸灯
+高速, 城市快速路:
+倒 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.5 PWM呼吸灯 - 实验篇">Unread</a></div><a class="article-title" href="/2026/07/01/1.5%20PWM%E5%91%BC%E5%90%B8%E7%81%AF%20-%20%E5%AE%9E%E9%AA%8C%E7%AF%87/" title="1.5 PWM呼吸灯 - 实验篇">1.5 PWM呼吸灯 - 实验篇</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-07-01T00:49:45.000Z" title="Created 2026-07-01 00:49:45" time="2026-07-01 00:49:45">2026-07-01</time><time class="time_hidden" datetime="2026-07-01T00:49:49.000Z" title="Updated 2026-07-01 00:49:49" time="2026-07-01 00:49:49">2026-07-01</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">这个实验中我们将实现呼吸灯
 
 硬件电路连接
 
@@ -637,16 +647,21 @@ Step 0 - 接线
 我们用来进行烧录的 daplink 同样具有 TTL 通信的功能, 如果你不使用
 daplink 而是用的 stlink 那么你需要一个 USB 转 TTL 模块
 , 让你的电脑接受到串口信号
-什么是 TTL ? - TTL 指的是 TTL
-电平（晶体管-晶体管逻辑电平） - USB 转 TTL
+什么是 TTL ?
+
+TTL 指的是 TTL
+电平（晶体管-晶体管逻辑电平）
+USB 转 TTL
 模块它的主要作用是让电脑和单片机进行对话: 电脑的 USB
 信号不能直接接到单片机的引脚上. 这个模块将 USB 信号转换成标准的 TTL
 串口信号（通常包含 TXD 发送引脚和 RXD
 接收引脚
+
 如果你使用 daplink, 直接将 daplink 上的 Rx 与单片机的 Tx 相连, Tx 与
 Rx 相连(单片机上的 Tx 和 Rx 在哪请看下文)
 如果你使用 stlink, 将 USB 转 TTL 模块的Rx 与单片机的 Tx 相连, Tx 与
-Rx 相连, GND 相连, 然后将它的另一端插到电脑上 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/" title="1.4 UART通信">Unread</a></div><a class="article-title" href="/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/" title="1.4 UART通信">1.4 UART通信</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-06-23T21:53:05.000Z" title="Created 2026-06-23 21:53:05" time="2026-06-23 21:53:05">2026-06-23</time><time class="time_hidden" datetime="2026-06-26T04:27:17.000Z" title="Updated 2026-06-26 04:27:17" time="2026-06-26 04:27:17">2026-06-26</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">通用的协议分层思想
+Rx 相连, GND 相连, 然后将它的另一端插到电脑上
+串 ...</div></div></div><div class="recent-post-item" onclick="pjax.loadUrl('/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/')"><div class="recent-post-info no-cover"><div class="recent-post-info-top"><div class="recent-post-info-top-tips"><div class="article-categories-original">学习记录</div><a class="unvisited-post" href="/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/" title="1.4 UART通信">Unread</a></div><a class="article-title" href="/2026/06/23/1.4%20UART%E9%80%9A%E4%BF%A1/" title="1.4 UART通信">1.4 UART通信</a></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days" style="font-size: 15px; display:none"></i><span class="article-meta-label">Created</span><time datetime="2026-06-23T21:53:05.000Z" title="Created 2026-06-23 21:53:05" time="2026-06-23 21:53:05">2026-06-23</time><time class="time_hidden" datetime="2026-06-26T04:27:17.000Z" title="Updated 2026-06-26 04:27:17" time="2026-06-26 04:27:17">2026-06-26</time></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" event.cancelbubble onclick="window.event.cancelBubble=true;"><span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>RM电控集合</span></a></span></div><div class="content">通用的协议分层思想
 初来乍到, 我们需要有一个对于通信协议的大致框架
 我们知道有很多通信协议, 比如I2C/SPI/CAN, 他们是具有分层框架的,
 也就是说我们要有一个基本的分层思想, 这对于我们初学者来说是至关重要的
