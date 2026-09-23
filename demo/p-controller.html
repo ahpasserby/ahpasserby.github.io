@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>P 控制器交互演示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F7F2; --panel:#FFFFFF; --panel-2:#F1F3EE;
+  --grid-fine:#E3E7DF; --grid-bold:#CBD3C8;
+  --ink:#1B2327; --ink-2:#5C6771; --ink-3:#8B949B;
+  --rule:#D6DBD3;
+  --actual:#0F7B85; --target:#B5812C; --danger:#BE4630; --ok:#3C7A4F;
+  --shade-bad:rgba(190,70,48,.08);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1A24; --panel:#132430; --panel-2:#162A37;
+    --grid-fine:#1C3341; --grid-bold:#27475A;
+    --ink:#DEEAEF; --ink-2:#93AAB7; --ink-3:#6E8794;
+    --rule:#234152;
+    --actual:#4FD1E0; --target:#F0C060; --danger:#FF7A5C; --ok:#6BCF92;
+    --shade-bad:rgba(255,122,92,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1A24; --panel:#132430; --panel-2:#162A37;
+  --grid-fine:#1C3341; --grid-bold:#27475A;
+  --ink:#DEEAEF; --ink-2:#93AAB7; --ink-3:#6E8794;
+  --rule:#234152;
+  --actual:#4FD1E0; --target:#F0C060; --danger:#FF7A5C; --ok:#6BCF92;
+  --shade-bad:rgba(255,122,92,.10);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:16px;line-height:1.7;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 16px 28px}
+
+header.top{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding-bottom:12px;border-bottom:1px solid var(--rule);flex-wrap:wrap;
+}
+.ttl{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.4}
+.ttl span{display:block;font-size:12.5px;font-weight:400;color:var(--ink-2);margin-top:3px}
+.themebtn{
+  font:inherit;font-size:12.5px;color:var(--ink-2);background:none;border:1px solid var(--rule);
+  border-radius:2px;padding:4px 10px;cursor:pointer;flex:none;
+}
+.themebtn:hover{color:var(--ink);border-color:var(--ink-3)}
+
+.bench{
+  display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:16px;
+}
+.bench>div{background:var(--panel)}
+.stage{position:relative;min-height:400px}
+#scene{display:block;width:100%;height:100%;position:absolute;inset:0}
+.flyaway{
+  position:absolute;inset:auto 12px 12px 12px;background:var(--danger);color:#fff;
+  padding:8px 12px;font-size:12.5px;font-weight:500;border-radius:2px;display:none;line-height:1.5;
+}
+.flyaway.on{display:block}
+.right{display:flex;flex-direction:column}
+.charts{display:grid;grid-template-rows:1fr 1fr;gap:1px;background:var(--rule);flex:1;min-height:250px}
+.chartbox{background:var(--panel);position:relative;min-height:125px}
+.chartbox canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
+.chartlabel{position:absolute;top:7px;left:12px;z-index:2;font-size:11.5px;color:var(--ink-3);pointer-events:none}
+.chartlabel b{color:var(--ink-2);font-weight:500}
+
+.panelpad{padding:14px 16px 16px;border-top:1px solid var(--rule)}
+.modes{display:flex;margin-bottom:14px;border:1px solid var(--rule);width:max-content;max-width:100%}
+.modes button{
+  font:inherit;font-size:12.5px;padding:5px 13px;background:none;border:none;cursor:pointer;
+  color:var(--ink-2);border-right:1px solid var(--rule);
+}
+.modes button:last-child{border-right:none}
+.modes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.slider-row label{font-size:12.5px;color:var(--ink-2);width:74px;flex:none}
+.slider-row input[type=range]{flex:1;min-width:0;accent-color:var(--actual);height:22px}
+.val{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:15px;font-weight:600;width:64px;text-align:right;flex:none}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 2px}
+.presets button{
+  font:inherit;font-size:12px;padding:4px 9px;background:var(--panel-2);color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:2px;cursor:pointer;line-height:1.4;
+}
+.presets button:hover{color:var(--ink);border-color:var(--ink-3)}
+.presets button b{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--ink)}
+.transport{display:flex;gap:8px;margin-top:12px}
+.transport button{
+  font:inherit;font-size:12.5px;padding:6px 15px;border:1px solid var(--ink);background:var(--ink);
+  color:var(--paper);border-radius:2px;cursor:pointer;
+}
+.transport button.ghost{background:none;color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--actual);outline-offset:2px}
+
+.readout{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+  border:1px solid var(--rule);border-top:none;background:var(--rule);gap:1px;
+}
+.readout div{background:var(--panel);padding:9px 11px}
+.readout dt{font-size:11px;color:var(--ink-3);margin:0}
+.readout dd{margin:2px 0 0;font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:500}
+.readout dd.small{font-size:13px;font-family:inherit;font-weight:500;padding-top:3px}
+
+.sswrap{border:1px solid var(--rule);border-top:none;background:var(--panel)}
+.sswrap canvas{display:block;width:100%;height:300px}
+.sscap{
+  border-top:1px solid var(--rule);padding:9px 14px;font-size:12.5px;color:var(--ink-2);line-height:1.6;
+}
+.sscap b{color:var(--ink);font-weight:500}
+
+@media (max-width:760px){
+  .bench{grid-template-columns:1fr}
+  .stage{min-height:290px}
+  .readout{grid-template-columns:repeat(2,1fr)}
+  .val{width:56px;font-size:14px}
+  .slider-row label{width:60px;font-size:12px}
+  .sswrap canvas{height:250px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="ttl">P 控制器交互演示
+    <span>1kg 物块 · 重力 −10N · 空气阻力 −v · 每 0.1s 更新一次 · a = F − v − 10</span>
+  </div>
+  <button class="themebtn" id="themebtn">切换配色</button>
+</header>
+
+<div class="bench">
+  <div class="stage">
+    <canvas id="scene"></canvas>
+    <div class="flyaway" id="flyaway">跑飞了。误差每一步反向放大，系统发散。</div>
+  </div>
+  <div class="right">
+    <div class="charts">
+      <div class="chartbox">
+        <div class="chartlabel" id="lab1"></div>
+        <canvas id="chartV"></canvas>
+      </div>
+      <div class="chartbox">
+        <div class="chartlabel"><b>手臂出力 F</b> (N) · <span style="color:var(--ink-3)">托住重力需要 10N</span></div>
+        <canvas id="chartF"></canvas>
+      </div>
+    </div>
+    <div class="panelpad">
+      <div class="modes" role="group" aria-label="控制目标">
+        <button id="mPos" aria-pressed="true">控制位置</button>
+        <button id="mVel" aria-pressed="false">控制速度</button>
+      </div>
+      <div class="slider-row">
+        <label for="kp">比例系数 k<sub>p</sub></label>
+        <input type="range" id="kp" min="0" max="25" step="0.1" value="15">
+        <span class="val" id="kpVal">15.0</span>
+      </div>
+      <div class="slider-row">
+        <label for="tgt" id="tgtLab">目标速度</label>
+        <input type="range" id="tgt" min="-2" max="4" step="0.1" value="1">
+        <span class="val" id="tgtVal">1.0</span>
+      </div>
+      <div class="presets" id="presets"></div>
+      <div class="transport">
+        <button id="play">暂停</button>
+        <button id="reset" class="ghost">从头开始</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<dl class="readout">
+  <div><dt id="dtNow">当前速度 v</dt><dd id="rV">0.000</dd></div>
+  <div><dt>当前误差 e</dt><dd id="rE">1.000</dd></div>
+  <div><dt>当前出力 F</dt><dd id="rF">15.00</dd></div>
+  <div><dt id="dtSS">稳态速度（解析解）</dt><dd id="rSS">0.3125</dd></div>
+  <div><dt>稳态误差 e<sub>∞</sub></dt><dd id="rESS">0.6875</dd></div>
+  <div><dt>收敛因子 λ</dt><dd id="rLam">−0.60</dd></div>
+  <div><dt>系统状态</dt><dd class="small" id="rStat">振荡收敛</dd></div>
+</dl>
+
+<div class="sswrap">
+  <canvas id="ssCanvas"></canvas>
+  <div class="sscap" id="ssCap"></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var T=0.1, M=1, GRAV=-10, DRAG=1;
+var KCRIT_VEL = 2*M/T - DRAG;   // 19
+var KCRIT_POS = 380;
+var mode="vel", kp=15, tgt=1;
+var st, hist, playing=true, flew=false;
+
+function resetSim(){
+  st={i:0,t:0,v:0,x:0,F:0,a:0,e:0};
+  st.e=(mode==="vel")?(tgt-0):(tgt-0);
+  st.F=kp*st.e;
+  hist=[{t:0,v:0,x:0,F:st.F,e:st.e}];
+  flew=false;
+  document.getElementById("flyaway").classList.remove("on");
+}
+function step(){
+  var pv=st.v, px=st.x;
+  var e=(mode==="vel")?(tgt-pv):(tgt-px);
+  var F=kp*e;
+  var a=(F+GRAV-DRAG*pv)/M;
+  var v=pv+T*a;
+  var x=px+T*v;
+  st.i++; st.t+=T; st.v=v; st.x=x; st.F=F; st.a=a; st.e=e;
+  hist.push({t:st.t,v:v,x:x,F:F,e:e});
+  if(hist.length>2200) hist.shift();
+  if(!isFinite(v)||Math.abs(v)>1e7||Math.abs(x)>1e7){
+    flew=true; playing=false;
+    document.getElementById("flyaway").classList.add("on");
+    document.getElementById("play").textContent="继续";
+  }
+}
+
+/* 解析解 */
+function theory(){
+  if(mode==="vel"){
+    var lam=1-T*(kp+DRAG)/M;
+    var ss=(kp*tgt+GRAV)/(kp+DRAG);
+    var ess=(tgt-GRAV)/(kp+DRAG);
+    var mag=Math.abs(lam), stable=mag<1, label;
+    if(Math.abs(lam+1)<1e-9) label="等幅振荡（临界）";
+    else if(!stable) label="发散 · 跑飞";
+    else if(mag<1e-9) label="一步到位";
+    else if(lam>0) label="单调收敛";
+    else label="振荡收敛";
+    return {lam:lam,mag:mag,ss:ss,ess:ess,stable:stable,label:label,osc:lam<0};
+  }
+  var tr=(1-T*DRAG/M)+(1-T*T*kp/M), de=1-T*DRAG/M;
+  var disc=tr*tr-4*de, mag2, lam2;
+  if(disc>=0){
+    var r1=(tr+Math.sqrt(disc))/2, r2=(tr-Math.sqrt(disc))/2;
+    mag2=Math.max(Math.abs(r1),Math.abs(r2));
+    lam2=(Math.abs(r1)>=Math.abs(r2))?r1:r2;
+  } else { mag2=Math.sqrt(de); lam2=NaN; }
+  var ess2=kp>0?(-GRAV)/kp:Infinity;
+  var stable2=mag2<1-1e-12, label2;
+  if(kp===0) label2="不出力 · 自由落体";
+  else if(Math.abs(mag2-1)<1e-9) label2="等幅振荡（临界）";
+  else if(!stable2) label2="发散 · 跑飞";
+  else label2=(disc<0)?"振荡收敛":"单调收敛";
+  return {lam:lam2,mag:mag2,ss:tgt-ess2,ess:ess2,stable:stable2,label:label2,osc:disc<0};
+}
+
+/* 画布工具 */
+function fit(cv){
+  var r=cv.getBoundingClientRect(), d=window.devicePixelRatio||1;
+  var w=Math.max(1,Math.round(r.width)), h=Math.max(1,Math.round(r.height));
+  if(cv.width!==w*d||cv.height!==h*d){cv.width=w*d;cv.height=h*d;}
+  var c=cv.getContext("2d"); c.setTransform(d,0,0,d,0,0);
+  return {c:c,w:w,h:h};
+}
+var _cache={},_cacheKey="";
+function cssv(n){
+  var k=document.documentElement.getAttribute("data-theme")+"|"+(window.matchMedia("(prefers-color-scheme: dark)").matches?1:0);
+  if(k!==_cacheKey){_cache={};_cacheKey=k;}
+  if(!(n in _cache)) _cache[n]=getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  return _cache[n];
+}
+
+/* 场景 */
+var sceneCv=document.getElementById("scene");
+function drawScene(frac){
+  var g=fit(sceneCv), c=g.c, W=g.w, H=g.h, PPM=46;
+  var camX=st.x+(isFinite(st.v)?st.v:0)*T*frac;
+  if(!isFinite(camX)) camX=0;
+  c.clearRect(0,0,W,H);
+  c.fillStyle=cssv("--panel"); c.fillRect(0,0,W,H);
+
+  var off=((camX*PPM)%PPM+PPM)%PPM;
+  c.lineWidth=1; c.strokeStyle=cssv("--grid-fine"); c.beginPath();
+  for(var y=off%PPM-PPM;y<H+PPM;y+=PPM){c.moveTo(0,Math.round(y)+.5);c.lineTo(W,Math.round(y)+.5);}
+  for(var x=0;x<W+PPM;x+=PPM){c.moveTo(Math.round(x)+.5,0);c.lineTo(Math.round(x)+.5,H);}
+  c.stroke();
+
+  var cy=H/2;
+  function toY(m){return cy-(m-camX)*PPM;}
+
+  c.strokeStyle=cssv("--grid-bold"); c.fillStyle=cssv("--ink-3");
+  c.font='11px "IBM Plex Mono",monospace'; c.textAlign="right";
+  var m0=Math.floor(camX-H/2/PPM), m1=Math.ceil(camX+H/2/PPM);
+  for(var m=m0;m<=m1;m++){
+    if(m1-m0>30&&m%5!==0) continue;
+    var yy=Math.round(toY(m))+.5;
+    c.beginPath(); c.moveTo(W-30,yy); c.lineTo(W-6,yy); c.stroke();
+    c.fillText(m+"m",W-34,yy+4);
+  }
+
+  if(mode==="pos"){
+    var ty=toY(tgt);
+    if(ty>-40&&ty<H+40){
+      c.strokeStyle=cssv("--target"); c.lineWidth=2; c.setLineDash([7,5]);
+      c.beginPath(); c.moveTo(0,ty); c.lineTo(W,ty); c.stroke(); c.setLineDash([]);
+      c.fillStyle=cssv("--target"); c.font='12px "Noto Sans SC",sans-serif'; c.textAlign="left";
+      c.fillText("目标位置",8,ty-7);
+    }
+  }
+
+  var bw=Math.min(112,W*0.42), bh=48, bx=W/2-bw/2-14, by=cy-bh/2, r=8;
+  c.fillStyle=cssv("--panel-2"); c.strokeStyle=cssv("--ink"); c.lineWidth=2.5;
+  c.beginPath(); c.moveTo(bx+r,by);
+  c.arcTo(bx+bw,by,bx+bw,by+bh,r); c.arcTo(bx+bw,by+bh,bx,by+bh,r);
+  c.arcTo(bx,by+bh,bx,by,r); c.arcTo(bx,by,bx+bw,by,r); c.closePath();
+  c.fill(); c.stroke();
+  c.fillStyle=cssv("--ink"); c.font='600 15px "IBM Plex Mono",monospace'; c.textAlign="center";
+  c.fillText("1kg",bx+bw/2,by+bh/2+5);
+
+  function arrow(x0,y0,dy,color,label,side){
+    if(!isFinite(dy)) return;
+    var L=Math.max(-150,Math.min(150,dy));
+    if(Math.abs(L)<2) L=L>=0?2:-2;
+    c.strokeStyle=color; c.fillStyle=color; c.lineWidth=2.2;
+    c.beginPath(); c.moveTo(x0,y0); c.lineTo(x0,y0-L); c.stroke();
+    var s=L>=0?1:-1;
+    c.beginPath(); c.moveTo(x0,y0-L-6*s); c.lineTo(x0-5,y0-L+2*s); c.lineTo(x0+5,y0-L+2*s); c.closePath(); c.fill();
+    c.font='12px "IBM Plex Mono",monospace';
+    c.textAlign=side==="l"?"right":"left";
+    c.fillText(label,x0+(side==="l"?-8:8),y0-L/2+4);
+  }
+  var Fp=isFinite(st.F)?st.F:0, vp=isFinite(st.v)?st.v:0;
+  arrow(bx+bw*0.72,by,Fp*3.4,cssv("--actual"),"F "+Fp.toFixed(1)+"N","r");
+  arrow(bx+bw*0.28,by+bh,GRAV*3.4,cssv("--ink-2"),"G −10N","l");
+  arrow(bx+bw*0.72,by+bh,(-DRAG*vp)*3.4,cssv("--ink-3"),"kv "+(-DRAG*vp).toFixed(1)+"N","r");
+
+  var vx=Math.max(26,bx-44);
+  c.strokeStyle=cssv("--rule"); c.lineWidth=1; c.setLineDash([3,4]);
+  c.beginPath(); c.moveTo(vx,cy-100); c.lineTo(vx,cy+100); c.stroke(); c.setLineDash([]);
+  arrow(vx,cy,vp*34,cssv("--actual"),"v "+vp.toFixed(2),"l");
+  if(mode==="vel"){
+    var L2=Math.max(-120,Math.min(120,tgt*34));
+    c.strokeStyle=cssv("--target"); c.lineWidth=2; c.setLineDash([5,4]);
+    c.beginPath(); c.moveTo(vx+16,cy); c.lineTo(vx+16,cy-L2); c.stroke(); c.setLineDash([]);
+    c.fillStyle=cssv("--target"); c.font='11px "Noto Sans SC",sans-serif'; c.textAlign="left";
+    c.fillText("目标",vx+21,cy-L2+4);
+  }
+  c.fillStyle=cssv("--ink-3"); c.font='11px "IBM Plex Mono",monospace'; c.textAlign="left";
+  c.fillText("t = "+st.t.toFixed(1)+"s    高度 x = "+(isFinite(st.x)?st.x.toFixed(2):"∞")+"m",10,H-12);
+}
+
+/* 时间曲线 */
+function drawSeries(cv,key,tgtLine,ssLine,color){
+  var g=fit(cv), c=g.c, W=g.w, H=g.h;
+  c.clearRect(0,0,W,H); c.fillStyle=cssv("--panel"); c.fillRect(0,0,W,H);
+  var padL=46,padR=10,padT=24,padB=20, win=12;
+  var t1=Math.max(win,st.t), t0=t1-win;
+  var pts=hist.filter(function(p){return p.t>=t0-0.2;});
+  var vals=pts.map(function(p){return p[key];}).filter(isFinite);
+  var extra=[];
+  if(tgtLine!==null) extra.push(tgtLine);
+  if(ssLine!==null&&isFinite(ssLine)) extra.push(ssLine);
+  var lo=Math.min.apply(null,vals.concat(extra)), hi=Math.max.apply(null,vals.concat(extra));
+  if(!isFinite(lo)||!isFinite(hi)){lo=-1;hi=1;}
+  var pad=(hi-lo)*0.18||1; lo-=pad; hi+=pad;
+  if(hi-lo<0.4){var mid=(hi+lo)/2; lo=mid-0.2; hi=mid+0.2;}
+  function X(t){return padL+(t-t0)/(t1-t0)*(W-padL-padR);}
+  function Y(v){return padT+(hi-v)/(hi-lo)*(H-padT-padB);}
+
+  c.strokeStyle=cssv("--grid-fine"); c.lineWidth=1;
+  c.fillStyle=cssv("--ink-3"); c.font='10px "IBM Plex Mono",monospace'; c.textAlign="right";
+  for(var k=0;k<=3;k++){
+    var vv=lo+(hi-lo)*k/3, yy=Math.round(Y(vv))+.5;
+    c.beginPath(); c.moveTo(padL,yy); c.lineTo(W-padR,yy); c.stroke();
+    c.fillText(vv.toFixed(2),padL-6,yy+3.5);
+  }
+  if(lo<0&&hi>0){
+    c.strokeStyle=cssv("--grid-bold");
+    c.beginPath(); var y0=Math.round(Y(0))+.5; c.moveTo(padL,y0); c.lineTo(W-padR,y0); c.stroke();
+  }
+  if(ssLine!==null&&isFinite(ssLine)&&ssLine>lo&&ssLine<hi){
+    c.strokeStyle=cssv("--ink-3"); c.lineWidth=1; c.setLineDash([2,4]);
+    c.beginPath(); c.moveTo(padL,Y(ssLine)); c.lineTo(W-padR,Y(ssLine)); c.stroke(); c.setLineDash([]);
+  }
+  if(tgtLine!==null&&tgtLine>lo&&tgtLine<hi){
+    c.strokeStyle=cssv("--target"); c.lineWidth=1.8; c.setLineDash([7,5]);
+    c.beginPath(); c.moveTo(padL,Y(tgtLine)); c.lineTo(W-padR,Y(tgtLine)); c.stroke(); c.setLineDash([]);
+  }
+  c.strokeStyle=color; c.lineWidth=2; c.lineJoin="round"; c.beginPath();
+  var started=false;
+  for(var i=0;i<pts.length;i++){
+    var p=pts[i]; if(!isFinite(p[key])) continue;
+    var pxx=X(p.t), pyy=Y(p[key]);
+    if(!started){c.moveTo(pxx,pyy);started=true;} else c.lineTo(pxx,pyy);
+  }
+  c.stroke();
+  if(pts.length){
+    var last=pts[pts.length-1];
+    if(isFinite(last[key])&&last[key]>=lo&&last[key]<=hi){
+      c.fillStyle=color; c.beginPath(); c.arc(X(last.t),Y(last[key]),3.2,0,7); c.fill();
+    }
+  }
+  c.strokeStyle=cssv("--rule"); c.lineWidth=1;
+  c.beginPath(); c.moveTo(padL+.5,padT-6); c.lineTo(padL+.5,H-padB+.5); c.lineTo(W-padR,H-padB+.5); c.stroke();
+}
+
+/* 稳态曲线（随 kp / 目标值联动） */
+function drawSS(){
+  var cv=document.getElementById("ssCanvas");
+  var g=fit(cv), c=g.c, W=g.w, H=g.h;
+  c.clearRect(0,0,W,H); c.fillStyle=cssv("--panel"); c.fillRect(0,0,W,H);
+  var padL=56,padR=18,padT=26,padB=42;
+  var isVel=(mode==="vel");
+  var kmax=isVel?25:450, kcrit=isVel?KCRIT_VEL:KCRIT_POS;
+  var lo,hi;
+  if(isVel){ lo=-2.2; hi=Math.max(2,tgt+0.6); }
+  else { lo=tgt-2.6; hi=tgt+0.9; }
+  function X(k){return padL+k/kmax*(W-padL-padR);}
+  function Y(v){return padT+(hi-v)/(hi-lo)*(H-padT-padB);}
+  function ssOf(k){ return isVel ? (k*tgt+GRAV)/(k+DRAG) : (k>0? tgt+GRAV/k : -Infinity); }
+
+  c.fillStyle=cssv("--shade-bad");
+  c.fillRect(X(kcrit),padT,Math.max(0,X(kmax)-X(kcrit)),H-padT-padB);
+  c.fillStyle=cssv("--danger"); c.font='11.5px "Noto Sans SC",sans-serif'; c.textAlign="center";
+  c.fillText("kp > "+kcrit+"：发散，没有稳态",(X(kcrit)+X(kmax))/2,padT+16);
+
+  c.strokeStyle=cssv("--grid-fine"); c.lineWidth=1;
+  c.fillStyle=cssv("--ink-3"); c.font='10.5px "IBM Plex Mono",monospace'; c.textAlign="right";
+  var stepY=(hi-lo)>6?2:1;
+  for(var v=Math.ceil(lo);v<=Math.floor(hi);v+=stepY){
+    var yy=Math.round(Y(v))+.5;
+    c.beginPath(); c.moveTo(padL,yy); c.lineTo(W-padR,yy); c.stroke();
+    c.fillText(v.toFixed(0),padL-7,yy+3.5);
+  }
+  c.textAlign="center";
+  var stepK=isVel?5:50;
+  for(var k=0;k<=kmax;k+=stepK){
+    var xx=Math.round(X(k))+.5;
+    c.beginPath(); c.moveTo(xx,padT); c.lineTo(xx,H-padB); c.stroke();
+    c.fillText(k,xx,H-padB+16);
+  }
+  c.fillStyle=cssv("--ink-2"); c.font='12px "Noto Sans SC",sans-serif';
+  c.fillText("比例系数 kp",(padL+W-padR)/2,H-9);
+  c.save(); c.translate(15,(padT+H-padB)/2); c.rotate(-Math.PI/2);
+  c.fillText(isVel?"稳态速度 (m/s)":"稳态位置 (m)",0,0); c.restore();
+
+  if(lo<0&&hi>0){
+    c.strokeStyle=cssv("--grid-bold"); c.lineWidth=1.2;
+    c.beginPath(); c.moveTo(padL,Y(0)); c.lineTo(W-padR,Y(0)); c.stroke();
+  }
+
+  c.strokeStyle=cssv("--target"); c.lineWidth=2; c.setLineDash([8,5]);
+  c.beginPath(); c.moveTo(padL,Y(tgt)); c.lineTo(W-padR,Y(tgt)); c.stroke(); c.setLineDash([]);
+  c.fillStyle=cssv("--target"); c.textAlign="left"; c.font='12px "Noto Sans SC",sans-serif';
+  c.fillText("目标 "+tgt.toFixed(1),padL+6,Y(tgt)-7);
+
+  c.strokeStyle=cssv("--actual"); c.lineWidth=2.4; c.beginPath();
+  var first=true, dk=kmax/600;
+  for(var kk=dk;kk<=kmax;kk+=dk){
+    var s=ssOf(kk);
+    if(!isFinite(s)||s<lo-1){first=true;continue;}
+    var pxx=X(kk), pyy=Y(Math.max(lo-0.5,s));
+    if(first){c.moveTo(pxx,pyy);first=false;} else c.lineTo(pxx,pyy);
+  }
+  c.stroke();
+
+  if(isVel&&tgt>0){
+    var kh=(-GRAV)/tgt;
+    if(kh<=kmax){
+      c.strokeStyle=cssv("--ink-3"); c.setLineDash([3,3]); c.lineWidth=1;
+      c.beginPath(); c.moveTo(X(kh),Y(0)); c.lineTo(X(kh),H-padB); c.stroke(); c.setLineDash([]);
+      c.fillStyle=cssv("--ink-2"); c.font='11px "Noto Sans SC",sans-serif'; c.textAlign="center";
+      c.fillText("kp="+kh.toFixed(1)+" 才刚好悬停",X(kh),H-padB-6);
+    }
+  }
+
+  var cur=ssOf(kp), cx=X(Math.min(kp,kmax));
+  c.strokeStyle=cssv("--ink"); c.lineWidth=1.5;
+  c.beginPath(); c.moveTo(cx,padT); c.lineTo(cx,H-padB); c.stroke();
+  if(kp<kcrit&&isFinite(cur)&&cur>=lo&&cur<=hi){
+    c.fillStyle=cssv("--ink"); c.beginPath(); c.arc(cx,Y(cur),4.5,0,7); c.fill();
+    c.fillStyle=cssv("--panel"); c.beginPath(); c.arc(cx,Y(cur),2,0,7); c.fill();
+  }
+  c.strokeStyle=cssv("--rule"); c.lineWidth=1;
+  c.strokeRect(padL+.5,padT+.5,W-padL-padR-.5,H-padT-padB);
+}
+
+/* UI */
+var elKp=document.getElementById("kp"), elTgt=document.getElementById("tgt");
+var elKpV=document.getElementById("kpVal"), elTgtV=document.getElementById("tgtVal");
+var PRESETS={
+  vel:[[0,"自由落体"],[5,"还是往下掉"],[9,"一步到位"],[10,"刚好悬停"],[11,"勉强上升"],[15,"抖两下收敛"],[19,"等幅振荡"],[20,"跑飞"]],
+  pos:[[5,"差 2m"],[20,"差 0.5m"],[50,"差 0.2m"],[150,"差 0.067m"],[380,"临界 · 等幅振荡"],[420,"跑飞"]]
+};
+function buildPresets(){
+  var box=document.getElementById("presets"); box.innerHTML="";
+  PRESETS[mode].forEach(function(p){
+    var b=document.createElement("button");
+    b.innerHTML="k<sub>p</sub>=<b>"+p[0]+"</b> "+p[1];
+    b.onclick=function(){
+      elKp.value=p[0]; kp=p[0]; syncLabels(); resetSim();
+      playing=true; document.getElementById("play").textContent="暂停";
+    };
+    box.appendChild(b);
+  });
+}
+function syncLabels(){
+  elKpV.textContent=kp.toFixed(mode==="vel"?1:0);
+  elTgtV.textContent=tgt.toFixed(1);
+  var th=theory(), isVel=(mode==="vel");
+  document.getElementById("dtNow").textContent=isVel?"当前速度 v":"当前位置 x";
+  document.getElementById("dtSS").innerHTML=isVel?"稳态速度（解析解）":"稳态位置（解析解）";
+  document.getElementById("rSS").textContent=th.stable?th.ss.toFixed(4):"不存在";
+  document.getElementById("rESS").textContent=th.stable?th.ess.toFixed(4):"—";
+  document.getElementById("rLam").textContent=isFinite(th.lam)
+    ? (th.lam<0?"−":"")+Math.abs(th.lam).toFixed(2)
+    : "|λ| "+th.mag.toFixed(3);
+  var s=document.getElementById("rStat");
+  s.textContent=th.label;
+  s.style.color=th.stable?cssv("--ok"):cssv("--danger");
+  document.getElementById("lab1").innerHTML=(isVel?'<b>速度 v</b> (m/s)':'<b>位置 x</b> (m)')
+    +' · <span style="color:var(--target)">虚线 = 目标</span>';
+  var cap=document.getElementById("ssCap");
+  if(isVel){
+    cap.innerHTML='曲线：<b>v<sub>∞</sub> = (k<sub>p</sub>·v<sub>目标</sub> − 10) / (k<sub>p</sub> + 1)</b>　'
+      +'当前 k<sub>p</sub>='+kp.toFixed(1)+' → 稳态 '+(th.stable?th.ss.toFixed(3)+' m/s，差 '+th.ess.toFixed(3):'不存在')
+      +'　曲线随上方滑块实时移动。';
+  } else {
+    cap.innerHTML='曲线：<b>x<sub>∞</sub> = x<sub>目标</sub> − 10 / k<sub>p</sub></b>　'
+      +'当前 k<sub>p</sub>='+kp.toFixed(0)+' → 稳态 '+(th.stable?th.ss.toFixed(3)+' m，差 '+th.ess.toFixed(3):'不存在')
+      +'　曲线随上方滑块实时移动。';
+  }
+  drawSS();
+}
+elKp.oninput=function(){kp=parseFloat(elKp.value);syncLabels();};
+elTgt.oninput=function(){tgt=parseFloat(elTgt.value);syncLabels();};
+document.getElementById("play").onclick=function(){
+  if(flew){resetSim();playing=true;this.textContent="暂停";return;}
+  playing=!playing; this.textContent=playing?"暂停":"继续";
+};
+document.getElementById("reset").onclick=function(){
+  resetSim(); playing=true; document.getElementById("play").textContent="暂停";
+};
+function setMode(m){
+  mode=m;
+  document.getElementById("mVel").setAttribute("aria-pressed",m==="vel");
+  document.getElementById("mPos").setAttribute("aria-pressed",m==="pos");
+  document.getElementById("tgtLab").textContent=(m==="vel")?"目标速度":"目标位置";
+  if(m==="vel"){ elKp.max=25; elKp.step=0.1; kp=15; elKp.value=15;
+    elTgt.min=-2; elTgt.max=4; elTgt.step=0.1; tgt=1; elTgt.value=1; }
+  else { elKp.max=450; elKp.step=1; kp=50; elKp.value=50;
+    elTgt.min=-4; elTgt.max=4; elTgt.step=0.5; tgt=2; elTgt.value=2; }
+  buildPresets(); syncLabels(); resetSim();
+  playing=true; document.getElementById("play").textContent="暂停";
+}
+document.getElementById("mVel").onclick=function(){setMode("vel");};
+document.getElementById("mPos").onclick=function(){setMode("pos");};
+
+document.getElementById("themebtn").onclick=function(){
+  var cur=document.documentElement.getAttribute("data-theme");
+  var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var now=cur||(dark?"dark":"light");
+  var next=(now==="dark")?"light":"dark";
+  document.documentElement.setAttribute("data-theme",next);
+  try{localStorage.setItem("p-theme",next);}catch(e){}
+  syncLabels();
+};
+try{var sv=localStorage.getItem("p-theme"); if(sv) document.documentElement.setAttribute("data-theme",sv);}catch(e){}
+
+/* 主循环 */
+var acc=0,last=performance.now();
+function loop(now){
+  var dt=Math.min(0.1,(now-last)/1000); last=now;
+  if(playing&&!flew){
+    acc+=dt; var guard=0;
+    while(acc>=T&&guard<40){step();acc-=T;guard++;}
+  }
+  var frac=(playing&&!flew)?Math.min(1,acc/T):0;
+  var th=theory();
+  drawScene(frac);
+  drawSeries(document.getElementById("chartV"),mode==="vel"?"v":"x",tgt,th.stable?th.ss:null,cssv("--actual"));
+  drawSeries(document.getElementById("chartF"),"F",null,null,cssv("--ink-2"));
+  document.getElementById("rV").textContent=isFinite(mode==="vel"?st.v:st.x)?(mode==="vel"?st.v:st.x).toFixed(3):"∞";
+  document.getElementById("rE").textContent=isFinite(st.e)?st.e.toFixed(3):"∞";
+  document.getElementById("rF").textContent=isFinite(st.F)?st.F.toFixed(2):"∞";
+  requestAnimationFrame(loop);
+}
+window.addEventListener("resize",function(){drawSS();});
+var mq=window.matchMedia("(prefers-color-scheme: dark)");
+if(mq.addEventListener) mq.addEventListener("change",syncLabels);
+
+setMode("pos");
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
