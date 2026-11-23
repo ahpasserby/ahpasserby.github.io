@@ -1,0 +1,1259 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>My DBMS 10 - 聚合 弱实体 泛化与特化 | Sarzn</title><meta name="author" content="Sarzn"><meta name="copyright" content="Sarzn"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="My DBMS 10 - 聚合 弱实体 泛化与特化"><meta name="application-name" content="My DBMS 10 - 聚合 弱实体 泛化与特化"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="My DBMS 10 - 聚合 弱实体 泛化与特化"><meta property="og:url" content="https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/index.html"><meta property="og:site_name" content="Sarzn"><meta property="og:description" content=",# 聚合 Aggregation 把一个联系集及其参与实体集作为一个整体，使这个整体能够参与其他联系 比如 还是这个选课事实：  小林选修了王老师教授的数据库课程。  原来的三元联系已经能记录“学生、课程、教师”的组合。现在需求增加了：  学生可能针对这次选课完成一个课程项目，例如“图书管理系统”"><meta property="og:locale" content="en"><meta property="og:image" content="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg"><meta property="article:author" content="Sarzn"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg"><meta name="description" content=",# 聚合 Aggregation 把一个联系集及其参与实体集作为一个整体，使这个整体能够参与其他联系 比如 还是这个选课事实：  小林选修了王老师教授的数据库课程。  原来的三元联系已经能记录“学生、课程、教师”的组合。现在需求增加了：  学生可能针对这次选课完成一个课程项目，例如“图书管理系统”"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@7.1.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与朋友们无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.sarzn.xyz/',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://hexo-circle-of-friends-liard.vercel.app/"},
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"Author: Sarzn","link":"Link: ","source":"Source: Sarzn","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.","copySuccess":"Copy success, copy and reprint please mark the address of this article"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Sarzn',
+  title: 'My DBMS 10 - 聚合 弱实体 泛化与特化',
+  postAI: '',
+  pageFillDescription: '理解, 画图, 再看画图, 总结, 聚合, 泛化与特化聚合把一个联系集及其参与实体集作为一个整体使这个整体能够参与其他联系比如还是这个选课事实小林选修了王老师教授的数据库课程原来的三元联系已经能记录学生课程教师的组合现在需求增加了学生可能针对这次选课完成一个课程项目例如图书管理系统这个项目与什么有关如果只关联缺少的信息学生小林不知道是他哪门课的项目课程数据库不知道是哪个学生哪位教师对应的项目教师王老师不知道是哪个学生哪门课的项目我们真正要关联的是小林选修王老师的数据库课这件完整的事与项目图书管理系统也就是一个已有的联系还需要作为整体去参与另一个联系聚合就是把已有的联系和参与实体集作为一个整体课件的做法是把以下部分框起来它们之间的联系这个整体就表示某个学生选修某位教师所教课程的组合然后让这个整体通过联系与关联下面外框表示聚合内部仍然保留原来的三元联系这里先省略属性和数量约束这两种画法都可以读图时先读框内再读框外框内小林选修王老师教授的数据库课程框外针对这次选课小林完成图书管理系统项目聚合没有把原来的细节删掉而是让我们能够把这组信息当成一个整体继续建立联系注意如下画法是错误的因为你已经用了个实体集了所以不再是聚合则说明不需要虚线框框了弱实体集部分键和拥有者实体集理解先看一个具体问题房间号能不能识别一个房间假设我们管理学校的宿舍楼号房间号床位数我们采用这些明确的规则楼号在全校唯一房间号只在同一栋楼里唯一不同楼可以重复每个房间必须属于且只属于一栋楼不另外给房间分配全校唯一的房间现在有人说找到房间你无法确定是楼还是楼的必须补充楼号楼房间才能确定具体房间也就是说房间不能只靠自身的房间号来唯一标识需要借助所属宿舍楼的在这个例子里概念对应对象含义弱实体集房间自身属性不足以独立完成标识需要拥有者的拥有者实体集宿舍楼为房间提供标识所需的楼号部分键也叫房间号在同一个拥有者内部可以区分弱实体如在拥有者宿舍楼里可以依靠部分键房间号来区分不同的弱实体房间所以弱实体集的完整标识拥有者的主键宿舍楼号弱实体的部分键房间号注意部分键也可以由多个属性组成并不一定只有一个属性画图元素画法类型宿舍楼普通矩形拥有者实体集楼号椭圆属性名加实线下划线拥有者实体集的主键房间双矩形弱实体集房间号椭圆属性名加虚线下划线弱实体集的部分键床位数普通椭圆弱实体集的属性宿舍楼与房间之间的识别联系双菱形识别联系识别联系通过这个联系找到帮助弱实体完成标识的拥有者也就是说这个双菱形连接在弱实体集和他的拥有者实体集之间泛化与特化假设我们分别设计学生和教师实体集属性学生教师你会发现两类对象都有因为他们都是人因此可以建立一个更一般的实体集把共同属性放进去实体集放在这一层的属性这里假设是系统统一的人物编号可以唯一标识一个人和保留各自特有的属性同时继承的属性所以虽然只画了但一个学生实际仍然具有没有把共同属性重复画出来不表示学生没有这些属性学生是一种人这类关系叫来自英文学生是人教师是人课件用三角形表示通常把放在上面和放在下面画图时例如小林是中的一名学生也属于不是学生小林和人物小林两个不同对象建立联系而是同一个人具有学生这个更具体的类型这与弱实体不同情况两边的含义属于房间和楼是两个不同对象某个学生与其对应的是同一个人因此不会因为继承的就变成弱实体泛化与特化得到类似结构但思考方向不同泛化从具体类型找共同点你先有和发现他们都有姓名电话等信息于是提取出从学生教师出发概括出人这是自下而上特化从一般类型划分更具体的类型你先有后来发现部分人是学生需要记录部分人是教师需要记录于是划分出和从人出发细分出学生教师这是自上而下笔记可以写泛化提取共同点形成父类特化根据区别划分子类子类继承父类的属性及适用的联系第一类约束能不能同时属于多个子类假设一个人既在学校读书又正式担任教师系统是否允许他同时属于和这要由题目规定不能凭直觉决定约束含义对本例的影响不相交互斥同一个人最多属于这些子类中的一个不能既是学生又是教师可重叠同一个人可以同时属于多个子类允许既是学生又是教师注意允许重叠不代表必须有人同时属于两类例如规定允许教师攻读学位即使当前没有这样的教师模型仍然可以是另外只说最多一类没有说必须属于一类是否必须属于某个子类是下面第二类约束负责的第二类约束父类里的每个人必须落入某个子类吗假设里还记录行政人员而我们目前只画了和两个子类那么一位行政人员可能属于既不属于也不属于这就是部分覆盖反过来如果题目规定系统中的每个都必须是学生或教师不能两者都不是这就是完全覆盖约束对父类实体的要求完全覆盖每个父类实体至少属于一个所列子类部分覆盖允许父类实体不属于任何所列子类这里的每个人是指实体集中被系统记录的人不是现实世界中的所有人两类约束必须组合看第一类问能否兼任第二类问能否两者都不是组合允许既是学生又是教师允许两者都不是不允许不允许不允许允许允许不允许允许允许用具体人员判断会更直观人员情况会违反哪种约束小林只是学生四种组合都可以接受王老师只是教师四种组合都可以接受小陈既是学生又是教师违反老赵属于但既不是学生也不是教师违反例如系统只记录学生和教师并且规定没有人可以兼任这两种身份拆开就是只记录学生和教师不可以兼任两者合起来表示每个恰好属于这两个子类中的一个再看画图知道了之后我们就可以完善这个图了改上方与之间的连接线题目要求画法每个人必须是学生或教师至少一种之间画双线表示允许有人既不是学生也不是教师之间画单线表示注意这里的双线表示至少属于一个子类不表示必须同时属于所有子类用文字注明课件用文字标明互斥约束题目要求标记不能同时是学生和教师在附近注明允许同时是学生和教师可明确注明注意不要靠给两条子类分支加箭头来表达不能兼任总结聚合需要针对一个已有联系再建立新的联系将原联系及其参与实体集框成整体再连接外部的联系外部关联的是框内的具体组合例如某学生选修某教师的某门课弱实体集部分键和拥有者实体集无法自己完成完整表示需要借助拥有者的主键再加上自己的部分键的实体集泛化与特化就是继承与被继承的关系',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2026-11-06 21:46:34',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/img/icon-white-tight.png"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sarzn.xyz/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f295f709d5f.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://ahpasserby.github.io/class/" title="八方来财"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f29aac52cfd.png" alt="八方来财"/><span class="back-menu-item-text">八方来财</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/ahpasserby" title="Github仓库"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f28ccb378b4.ico" alt="Github仓库"/><span class="back-menu-item-text">Github仓库</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Sarzn</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 奇怪的东西</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://ahpasserby.github.io/heart/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 爱心</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="Random Post" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="Search 🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> Search</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="Console" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://img.sarzn.xyz:56081/2025/10/15/68ee939b5087b.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68ee939b5087b.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://img.sarzn.xyz:56081/2025/10/15/68eeb55ed61f7.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68eeb55ed61f7.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">Interaction</div><span class="author-content-item-title"> Newest Comments</span></div><div class="aside-list"><span>loading...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">Interests</div><span class="author-content-item-title">Find your area of interest</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" style="font-size: 1.05rem;">RM电控集合<sup>27</sup></a><a href="/tags/javaSE%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" style="font-size: 1.05rem;">javaSE经验分享<sup>6</sup></a><a href="/tags/schoolProject/" style="font-size: 1.05rem;">schoolProject<sup>1</sup></a><a href="/tags/skillShare/" style="font-size: 1.05rem;">skillShare<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" style="font-size: 1.05rem;">数据处理教学<sup>3</sup></a><a href="/tags/%E6%95%B0%E6%A8%A1%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 1.05rem;">数模学习记录<sup>5</sup></a><a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 1.05rem;">科学上网<sup>9</sup></a><a href="/tags/%E7%AB%9E%E6%8A%80%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 1.05rem;">竞技编程学习记录<sup>6</sup></a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.05rem;">算法<sup>3</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>Articles</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>Archives</span><a class="card-more-btn" href="/archives/" title="More">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/11/"><span class="card-archive-list-date">November 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">14</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/10/"><span class="card-archive-list-date">October 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/09/"><span class="card-archive-list-date">September 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">8</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/08/"><span class="card-archive-list-date">August 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">4</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/07/"><span class="card-archive-list-date">July 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">16</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/06/"><span class="card-archive-list-date">June 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">19</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/05/"><span class="card-archive-list-date">May 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">17</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/04/"><span class="card-archive-list-date">April 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="Toggle Display Mode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="Toggle Sidebar"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="Toggle Music"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="Toggle"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/DMS-Database-Management-Systems/" itemprop="url">DMS - Database Management Systems</a></span><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">My DBMS 10 - 聚合 弱实体 泛化与特化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-11-06T21:46:34.000Z" title="Created 2026-11-06 21:46:34">2026-11-06</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-11-06T21:46:34.000Z" title="Updated 2026-11-06 21:46:34">2026-11-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="My DBMS 10 - 聚合 弱实体 泛化与特化"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">Post View:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为珠海"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>珠海</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/"><header><a class="post-meta-categories" href="/categories/DMS-Database-Management-Systems/" itemprop="url">DMS - Database Management Systems</a><h1 id="CrawlerTitle" itemprop="name headline">My DBMS 10 - 聚合 弱实体 泛化与特化</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Sarzn</span><time itemprop="dateCreated datePublished" datetime="2026-11-06T21:46:34.000Z" title="Created 2026-11-06 21:46:34">2026-11-06</time><time itemprop="dateCreated datePublished" datetime="2026-11-06T21:46:34.000Z" title="Updated 2026-11-06 21:46:34">2026-11-06</time></header><p>,# 聚合 Aggregation</p>
+<p>把一个联系集及其参与实体集作为一个整体，使这个整体能够参与其他联系</p>
+<p>比如 还是这个选课事实：</p>
+<blockquote>
+<p>小林选修了王老师教授的数据库课程。</p>
+</blockquote>
+<p>原来的三元联系已经能记录“学生、课程、教师”的组合。现在需求增加了：</p>
+<blockquote>
+<p>学生可能针对这次选课完成一个课程项目，例如“图书管理系统”。</p>
+</blockquote>
+<p>这个项目与什么有关？</p>
+<table>
+<thead>
+<tr>
+<th>如果只关联……</th>
+<th>缺少的信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学生“小林”</td>
+<td>不知道是他哪门课的项目</td>
+</tr>
+<tr>
+<td>课程“数据库”</td>
+<td>不知道是哪个学生、哪位教师对应的项目</td>
+</tr>
+<tr>
+<td>教师“王老师”</td>
+<td>不知道是哪个学生、哪门课的项目</td>
+</tr>
+</tbody>
+</table>
+<p>我们真正要关联的是：</p>
+<blockquote>
+<p><strong>“小林选修王老师的数据库课”这件完整的事，与项目“图书管理系统”。</strong></p>
+</blockquote>
+<p>也就是：<strong>一个已有的联系，还需要作为整体去参与另一个联系</strong></p>
+<p>聚合就是 <strong>把已有的联系和参与实体集，作为一个整体</strong></p>
+<p>课件的做法是，把以下部分框起来：</p>
+<ul>
+<li>Student；</li>
+<li>Course；</li>
+<li>Instructor；</li>
+<li>它们之间的 Enroll 联系。</li>
+</ul>
+<p>这个整体就表示“某个学生选修某位教师所教课程”的组合。然后让这个整体通过
+<code>Doing</code> 联系，与 <code>Project</code> 关联。</p>
+<p>下面外框表示聚合，内部仍然保留原来的三元联系。这里先省略属性和数量约束</p>
+<p>![[Pasted image 20261106220344.png|Pasted image
+20261106220344.png]]</p>
+<p>这两种画法都可以</p>
+<p><strong>读图时，先读框内，再读框外：</strong></p>
+<p>框内：</p>
+<blockquote>
+<p>小林选修王老师教授的数据库课程。</p>
+</blockquote>
+<p>框外：</p>
+<blockquote>
+<p>针对这次选课，小林完成“图书管理系统”项目。</p>
+</blockquote>
+<p>聚合没有把原来的细节删掉，而是让我们能够<strong>把这组信息当成一个整体继续建立联系</strong>。</p>
+<hr>
+<blockquote>
+<p>注意! 如下画法是错误的</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2026/11/06/dfac131f57bb0b85fe9149b237a2b00e088e497b2510eb44e2007b554116fda3.png" alt="Pasted image 20261106215253" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">
+因为你已经用了个实体集了, 所以不再是聚合, 则说明不需要虚线框框了</p>
+<hr>
+<h1 id="弱实体集部分键-和-拥有者实体集">弱实体集(部分键), 和
+拥有者实体集</h1>
+<h2 id="理解">理解</h2>
+<p><strong>先看一个具体问题：房间号能不能识别一个房间？</strong></p>
+<p>假设我们管理学校的宿舍：</p>
+<table>
+<thead>
+<tr>
+<th>楼号</th>
+<th>房间号</th>
+<th>床位数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>301</td>
+<td>4</td>
+</tr>
+<tr>
+<td>A</td>
+<td>302</td>
+<td>6</td>
+</tr>
+<tr>
+<td>B</td>
+<td>301</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>我们采用这些明确的规则：</p>
+<ul>
+<li>楼号在全校唯一。</li>
+<li>房间号只在同一栋楼里唯一，不同楼可以重复。</li>
+<li>每个房间必须属于且只属于一栋楼。</li>
+<li>不另外给房间分配全校唯一的房间 ID。</li>
+</ul>
+<p>现在有人说：“找到 301 房间。”</p>
+<p>你无法确定是 A 楼还是 B 楼的 301。必须补充楼号：</p>
+<blockquote>
+<p><strong>A 楼 + 301 房间</strong></p>
+</blockquote>
+<p>才能确定具体房间。</p>
+<p>也就是说，<strong>房间不能只靠自身的房间号来唯一标识，需要借助所属宿舍楼的
+Key</strong></p>
+<p>在这个例子里：</p>
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 11%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr>
+<th>概念</th>
+<th>对应对象</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>弱实体集 Weak Entity Set</td>
+<td>Room 房间</td>
+<td>自身属性不足以独立完成标识，需要拥有者的 Key</td>
+</tr>
+<tr>
+<td>拥有者实体集 Owner Entity Set</td>
+<td>Building 宿舍楼</td>
+<td>为房间提供标识所需的楼号</td>
+</tr>
+<tr>
+<td>部分键 Partial Key，也叫 Discriminator</td>
+<td>room_no 房间号</td>
+<td>在同一个拥有者内部，可以区分弱实体. <br>如在拥有者(宿舍楼)里,
+可以依靠部分键(房间号)来区分不同的弱实体(房间)</td>
+</tr>
+</tbody>
+</table>
+<p>所以弱实体集的完整标识 = 拥有者的主键 Key (宿舍楼号) +
+弱实体的部分键(房间号)</p>
+<blockquote>
+<p>注意! 部分键也可以由多个属性组成, 并不一定只有一个属性</p>
+</blockquote>
+<h2 id="画图">画图</h2>
+<table>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 27%">
+<col style="width: 49%">
+</colgroup>
+<thead>
+<tr>
+<th>元素</th>
+<th>画法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Building 宿舍楼</td>
+<td>普通矩形</td>
+<td>拥有者实体集</td>
+</tr>
+<tr>
+<td>building_id 楼号</td>
+<td>椭圆，属性名加<strong>实线下划线</strong></td>
+<td>拥有者实体集的主键</td>
+</tr>
+<tr>
+<td>Room 房间</td>
+<td><strong>双矩形</strong></td>
+<td>弱实体集</td>
+</tr>
+<tr>
+<td>room_no 房间号</td>
+<td>椭圆，属性名加<strong>虚线下划线</strong></td>
+<td>弱实体集的部分键</td>
+</tr>
+<tr>
+<td>床位数</td>
+<td>普通椭圆</td>
+<td>(弱实体集的) 属性</td>
+</tr>
+<tr>
+<td>宿舍楼与房间之间的识别联系</td>
+<td><strong>双菱形</strong></td>
+<td>识别联系 Identifying Relationship</td>
+</tr>
+</tbody>
+</table>
+<p><strong>识别联系</strong>: 通过这个联系,
+找到帮助弱实体完成标识的拥有者 也就是说: 这个双菱形连接在
+<strong>弱实体集</strong> 和 <strong>他的拥有者实体集</strong> 之间</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2026/11/07/4ce50c8de049b8328ffd09e8275b38823952319bbcde41f6d4cdf6faec78b3fe.png" alt="Pasted image 20261107120039" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;"></p>
+<hr>
+<h1 id="泛化与特化-generalization-specialization">泛化与特化
+Generalization &amp; Specialization</h1>
+<p>假设我们分别设计学生和教师：</p>
+<table>
+<thead>
+<tr>
+<th>实体集</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Student 学生</td>
+<td>id、name、phone、year、GPA</td>
+</tr>
+<tr>
+<td>Instructor 教师</td>
+<td>id、name、phone、title、salary</td>
+</tr>
+</tbody>
+</table>
+<p>你会发现，两类对象都有
+<code>id、name、phone</code>，因为他们都是<strong>人
+Person</strong>。</p>
+<p>因此，可以建立一个更一般的实体集
+<strong>Person</strong>，把共同属性放进去：</p>
+<table>
+<thead>
+<tr>
+<th>实体集</th>
+<th>放在这一层的属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Person</td>
+<td>id、name、phone</td>
+</tr>
+<tr>
+<td>Student</td>
+<td>year、GPA</td>
+</tr>
+<tr>
+<td>Instructor</td>
+<td>title、salary</td>
+</tr>
+</tbody>
+</table>
+<p>这里假设 <code>id</code>
+是系统统一的人物编号，可以唯一标识一个人。</p>
+<p>Student 和 Instructor 保留各自特有的属性，同时<strong>继承 Person
+的属性</strong>。</p>
+<p>所以，Student 虽然只画了
+<code>year、GPA</code>，但一个学生实际仍然具有：</p>
+<blockquote>
+<p>id、name、phone、year、GPA。</p>
+</blockquote>
+<p><strong>没有把共同属性重复画出来，不表示学生没有这些属性。</strong></p>
+<p><strong>ISA：学生“是一种”人</strong></p>
+<p>这类关系叫 <strong>ISA</strong>，来自英文 <em>is a</em>：</p>
+<ul>
+<li>A student <strong>is a</strong> person：学生是人。</li>
+<li>An instructor <strong>is a</strong> person：教师是人。</li>
+</ul>
+<p>课件用<strong>三角形</strong>表示 ISA，通常把 Person
+放在上面，Student 和 Instructor 放在下面。</p>
+<p>画图时：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2026/11/07/39766c51209ab1c7af167e5951a73c91db30f137ed5d2a6ef7872423b596bb01.png" alt="Pasted image 20261107120753" loading="lazy" style="display:block;margin:1em auto;max-width:100%;height:auto;">
+例如，小林是 Student 中的一名学生，也属于
+Person。不是“学生小林”和“人物小林”两个不同对象建立联系，而是<strong>同一个人具有学生这个更具体的类型</strong>。</p>
+<p>这与弱实体不同：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>两边的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Room 属于 Building</td>
+<td>房间和楼是两个不同对象</td>
+</tr>
+<tr>
+<td>Student ISA Person</td>
+<td>某个学生与其对应的 Person 是同一个人</td>
+</tr>
+</tbody>
+</table>
+<p>因此，<strong>Student 不会因为继承 Person 的
+Key，就变成弱实体。</strong></p>
+<hr>
+<p><strong>泛化与特化：得到类似结构，但思考方向不同</strong></p>
+<p><strong>泛化 Generalization：从具体类型找共同点。</strong></p>
+<p>你先有 Student 和
+Instructor，发现他们都有姓名、电话等信息，于是提取出 Person。</p>
+<blockquote>
+<p>从学生、教师出发，概括出“人”。</p>
+</blockquote>
+<p>这是<strong>自下而上（bottom-up）</strong>。</p>
+<p><strong>特化
+Specialization：从一般类型划分更具体的类型。</strong></p>
+<p>你先有 Person，后来发现：</p>
+<ul>
+<li>部分人是学生，需要记录 GPA；</li>
+<li>部分人是教师，需要记录 salary。</li>
+</ul>
+<p>于是划分出 Student 和 Instructor。</p>
+<blockquote>
+<p>从“人”出发，细分出学生、教师。</p>
+</blockquote>
+<p>这是<strong>自上而下（top-down）</strong>。</p>
+<p>笔记可以写：</p>
+<blockquote>
+<p><strong>泛化：提取共同点，形成父类。</strong><br>
+<strong>特化：根据区别，划分子类。</strong><br>
+<strong>子类继承父类的属性及适用的联系。</strong></p>
+</blockquote>
+<hr>
+<p><strong>第一类约束：能不能同时属于多个子类？</strong></p>
+<p>假设一个人既在学校读书，又正式担任教师。系统是否允许他同时属于
+Student 和 Instructor？</p>
+<p>这要由题目规定，不能凭直觉决定。</p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr>
+<th>约束</th>
+<th>含义</th>
+<th>对本例的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Disjoint 不相交／互斥</strong></td>
+<td>同一个人最多属于这些子类中的一个</td>
+<td>不能既是学生又是教师</td>
+</tr>
+<tr>
+<td><strong>Overlapping 可重叠</strong></td>
+<td>同一个人可以同时属于多个子类</td>
+<td>允许既是学生又是教师</td>
+</tr>
+</tbody>
+</table>
+<p>注意：<strong>允许重叠，不代表必须有人同时属于两类。</strong></p>
+<p>例如，规定允许教师攻读学位，即使当前没有这样的教师，模型仍然可以是
+overlapping。</p>
+<p>另外，disjoint
+只说“<strong>最多一类</strong>”，没有说“必须属于一类”。是否必须属于某个子类，是下面第二类约束负责的。</p>
+<hr>
+<p><strong>第二类约束：父类里的每个人，必须落入某个子类吗？</strong></p>
+<p>假设 Person 里还记录行政人员，而我们目前只画了 Student 和 Instructor
+两个子类。</p>
+<p>那么，一位行政人员可能：</p>
+<ul>
+<li>属于 Person；</li>
+<li>既不属于 Student，也不属于 Instructor。</li>
+</ul>
+<p>这就是<strong>部分覆盖 Partial</strong>。</p>
+<p>反过来，如果题目规定：</p>
+<blockquote>
+<p>系统中的每个 Person 都必须是学生或教师，不能两者都不是。</p>
+</blockquote>
+<p>这就是<strong>完全覆盖 Total</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>约束</th>
+<th>对父类实体的要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Total 完全覆盖</strong></td>
+<td>每个父类实体至少属于一个所列子类</td>
+</tr>
+<tr>
+<td><strong>Partial 部分覆盖</strong></td>
+<td>允许父类实体不属于任何所列子类</td>
+</tr>
+</tbody>
+</table>
+<p>这里的“每个人”是指<strong>Person
+实体集中被系统记录的人</strong>，不是现实世界中的所有人。</p>
+<hr>
+<p><strong>两类约束必须组合看</strong></p>
+<p>第一类问：<strong>能否兼任？</strong><br>
+第二类问：<strong>能否两者都不是？</strong></p>
+<table>
+<thead>
+<tr>
+<th>组合</th>
+<th>允许既是学生又是教师？</th>
+<th>允许两者都不是？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disjoint + Total</td>
+<td>不允许</td>
+<td>不允许</td>
+</tr>
+<tr>
+<td>Disjoint + Partial</td>
+<td>不允许</td>
+<td>允许</td>
+</tr>
+<tr>
+<td>Overlapping + Total</td>
+<td>允许</td>
+<td>不允许</td>
+</tr>
+<tr>
+<td>Overlapping + Partial</td>
+<td>允许</td>
+<td>允许</td>
+</tr>
+</tbody>
+</table>
+<p>用具体人员判断会更直观：</p>
+<table>
+<thead>
+<tr>
+<th>人员情况</th>
+<th>会违反哪种约束？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小林只是学生</td>
+<td>四种组合都可以接受</td>
+</tr>
+<tr>
+<td>王老师只是教师</td>
+<td>四种组合都可以接受</td>
+</tr>
+<tr>
+<td>小陈既是学生又是教师</td>
+<td>违反 <strong>Disjoint</strong></td>
+</tr>
+<tr>
+<td>老赵属于 Person，但既不是学生也不是教师</td>
+<td>违反 <strong>Total</strong></td>
+</tr>
+</tbody>
+</table>
+<p>例如：</p>
+<blockquote>
+<p>系统只记录学生和教师，并且规定没有人可以兼任这两种身份。</p>
+</blockquote>
+<p>拆开就是：</p>
+<ul>
+<li>“只记录学生和教师”：<strong>Total</strong>。</li>
+<li>“不可以兼任”：<strong>Disjoint</strong>。</li>
+</ul>
+<p>两者合起来表示：<strong>每个 Person
+恰好属于这两个子类中的一个</strong></p>
+<h2 id="再看画图">再看画图</h2>
+<p>知道了 Total/Partial; Disjoint/Overlapping
+之后我们就可以完善这个图了</p>
+<p><strong>① Total / Partial：改上方 Person 与 ISA
+之间的连接线</strong></p>
+<table>
+<thead>
+<tr>
+<th>题目要求</th>
+<th>画法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每个人必须是学生或教师，至少一种</td>
+<td><strong>Person—ISA 之间画双线</strong>，表示 Total</td>
+</tr>
+<tr>
+<td>允许有人既不是学生也不是教师</td>
+<td><strong>Person—ISA 之间画单线</strong>，表示 Partial</td>
+</tr>
+</tbody>
+</table>
+<p>注意：这里的双线表示“至少属于<strong>一个</strong>子类”，不表示必须同时属于所有子类。</p>
+<p><strong>② Disjoint / Overlapping：用文字注明</strong></p>
+<p>课件用 <strong><code>disjoint</code></strong> 文字标明互斥约束</p>
+<table>
+<thead>
+<tr>
+<th>题目要求</th>
+<th>标记</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不能同时是学生和教师</td>
+<td>在 ISA 附近注明 <strong><code>disjoint</code></strong></td>
+</tr>
+<tr>
+<td>允许同时是学生和教师</td>
+<td>可明确注明 <strong><code>overlapping</code></strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意!
+<strong>不要靠给两条子类分支加箭头，来表达“不能兼任”</strong></p>
+</blockquote>
+<p>![[Pasted image 20261107121356.png|Pasted image
+20261107121356.png]]</p>
+<hr>
+<h1 id="总结">总结</h1>
+<h2 id="聚合">聚合</h2>
+<ul>
+<li><p>需要针对一个已有联系，再建立新的联系</p></li>
+<li><p>将原联系及其参与实体集框成整体，再连接外部的联系</p></li>
+<li><p>外部关联的是框内的具体组合，例如“某学生选修某教师的某门课”</p>
+<h2 id="弱实体集部分键-和-拥有者实体集-1">弱实体集(部分键), 和
+拥有者实体集</h2></li>
+<li><p>无法自己完成完整表示, 需要借助拥有者的主键,
+再加上自己的部分键的实体集</p></li>
+</ul>
+<h2 id="泛化与特化">泛化与特化</h2>
+<ul>
+<li>就是继承与被继承的关系</li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Sarzn</div><div class="post-copyright__author_desc">我爱你，你爱我</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/')">My DBMS 10 - 聚合 弱实体 泛化与特化</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="Support Author"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>Donate</div><div class="reward-main"><div class="reward-all"><span class="reward-title">Thanks for your support</span><ul class="reward-group"><li class="reward-item"><a href="https://img.sarzn.xyz:56081/2025/10/15/68ee939b5087b.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68ee939b5087b.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://img.sarzn.xyz:56081/2025/10/15/68eeb55ed61f7.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68eeb55ed61f7.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">Supporters</div><div class="reward-dec">Your support motivates me to write more 🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=My DBMS 10 - 聚合 弱实体 泛化与特化&amp;url=https://sarzn.xyz/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/&amp;pic=linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div><div class="post_share"><div class="social-share" data-image="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/11/06/My%20DBMS%209%20-%20%E4%B8%89%E5%85%83%E8%81%94%E7%B3%BB%E7%9A%84%E7%BA%A6%E6%9D%9F/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">My DBMS 9 - 三元联系的约束</div></div></a></div><div class="next-post pull-right"><a href="/2026/11/07/My%20DBMS%2011%20-%20%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">My DBMS 11 - 设计问题</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> Comment</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/15/68ee93517f8ee.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">一个为了水绿点图而不惜手段分享自己的学习经验的人</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Sarzn</h1><div class="author-info__desc">我爱你，你爱我</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/ahpasserby" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/1247707854" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%B1%E5%AE%9E%E4%BD%93%E9%9B%86%E9%83%A8%E5%88%86%E9%94%AE-%E5%92%8C-%E6%8B%A5%E6%9C%89%E8%80%85%E5%AE%9E%E4%BD%93%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">弱实体集(部分键), 和
+拥有者实体集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%BB%E5%9B%BE"><span class="toc-number">1.2.</span> <span class="toc-text">画图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96-generalization-specialization"><span class="toc-number">2.</span> <span class="toc-text">泛化与特化
+Generalization &amp; Specialization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E7%9C%8B%E7%94%BB%E5%9B%BE"><span class="toc-number">2.1.</span> <span class="toc-text">再看画图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88"><span class="toc-number">3.1.</span> <span class="toc-text">聚合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B1%E5%AE%9E%E4%BD%93%E9%9B%86%E9%83%A8%E5%88%86%E9%94%AE-%E5%92%8C-%E6%8B%A5%E6%9C%89%E8%80%85%E5%AE%9E%E4%BD%93%E9%9B%86-1"><span class="toc-number">3.2.</span> <span class="toc-text">弱实体集(部分键), 和
+拥有者实体集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">泛化与特化</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/23/02%20-%20MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80/" title="02 - MySQL数据库基础">02 - MySQL数据库基础</a><time datetime="2026-11-23T20:20:02.000Z" title="Created 2026-11-23 20:20:02">2026-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/23/Quick%20Start/" title="Quick Start">Quick Start</a><time datetime="2026-11-23T15:43:27.032Z" title="Created 2026-11-23 15:43:27">2026-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/07/My%20DBMS%2012%20-%20%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F/" title="My DBMS 12 - 关系模式">My DBMS 12 - 关系模式</a><time datetime="2026-11-07T13:41:37.000Z" title="Created 2026-11-07 13:41:37">2026-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/07/My%20DBMS%2011%20-%20%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" title="My DBMS 11 - 设计问题">My DBMS 11 - 设计问题</a><time datetime="2026-11-07T12:23:26.000Z" title="Created 2026-11-07 12:23:26">2026-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/06/My%20DBMS%2010%20-%20%E8%81%9A%E5%90%88%20%E5%BC%B1%E5%AE%9E%E4%BD%93%20%E6%B3%9B%E5%8C%96%E4%B8%8E%E7%89%B9%E5%8C%96/" title="My DBMS 10 - 聚合 弱实体 泛化与特化">My DBMS 10 - 聚合 弱实体 泛化与特化</a><time datetime="2026-11-06T21:46:34.000Z" title="Created 2026-11-06 21:46:34">2026-11-06</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.shields.io/badge/Sarzn-学习中-orange.svg" alt="正在敲键盘，请勿打扰" title="正在敲键盘，请勿打扰"/><div id="runtimeTextTip"></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://github.com/ahpasserby/ahpasserby.github.io" style="margin-inline:5px" data-title="本站项目由Github托管" title="本站项目由Github托管"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg" alt="本站项目由Github托管"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2025 - 2026 By <a class="footer-bar-link" href="/" title="Sarzn" target="_blank">Sarzn</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        const from = '出自 ' + data.from
+        const sub = []
+        sub.unshift(data.hitokoto, from)
+        window.typed = new Typed('#footer-type-tips', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('footer-type-tips').innerHTML = data.hitokoto
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.1.0/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/ahpasserby/ahpasserby.github.io" title="仓库">仓库</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">Articles</div><div class="length-num">97</div></a><a href="/tags/" title="tag"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/" title="category"><div class="headline">Categories</div><div class="length-num">12</div></a></div><span class="sidebar-menu-item-title">Function</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="Display Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>Display Mode</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://sarzn.xyz/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f295f709d5f.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://ahpasserby.github.io/class/" title="八方来财"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f29aac52cfd.png" alt="八方来财"/><span class="back-menu-item-text">八方来财</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/ahpasserby" title="Github仓库"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.sarzn.xyz:56081/2025/10/18/68f28ccb378b4.ico" alt="Github仓库"/><span class="back-menu-item-text">Github仓库</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 奇怪的东西</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://ahpasserby.github.io/heart/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 爱心</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/RM%E7%94%B5%E6%8E%A7%E9%9B%86%E5%90%88/" style="font-size: 0.88rem;">RM电控集合<sup>27</sup></a><a href="/tags/javaSE%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" style="font-size: 0.88rem;">javaSE经验分享<sup>6</sup></a><a href="/tags/schoolProject/" style="font-size: 0.88rem;">schoolProject<sup>1</sup></a><a href="/tags/skillShare/" style="font-size: 0.88rem;">skillShare<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%95%99%E5%AD%A6/" style="font-size: 0.88rem;">数据处理教学<sup>3</sup></a><a href="/tags/%E6%95%B0%E6%A8%A1%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 0.88rem;">数模学习记录<sup>5</sup></a><a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 0.88rem;">科学上网<sup>9</sup></a><a href="/tags/%E7%AB%9E%E6%8A%80%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 0.88rem;">竞技编程学习记录<sup>6</sup></a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 0.88rem;">算法<sup>3</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("10/15/2025 03:32:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2025 By 安知鱼 V1.7.1",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Sarzn 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("10/15/2025 03:32:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "https://img.shields.io/badge/Sarzn-摸鱼中-blue.svg";
+        img.title = "下线啦，摸鱼时间~";
+        img.alt = "下线啦，摸鱼时间~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.sarzn.xyz/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.44/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.sarzn.xyz/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[image]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[link]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[code]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.sarzn.xyz/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "Unable to get the data, please make sure the settings are correct."
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.44/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += 'No Comment'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script src="/js/embed-autoheight.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
